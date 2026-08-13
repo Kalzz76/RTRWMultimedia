@@ -1,0 +1,25 @@
+  Determining projects to restore...
+  Nothing to do. None of the projects specified contain packages to restore.
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(198,171): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(207,176): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(308,156): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(312,153): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(316,152): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(320,175): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+
+Build FAILED.
+
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(198,171): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(207,176): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(308,156): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(312,153): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(316,152): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.Designer.cs(320,175): error CS1026: ) expected [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+    0 Warning(s)
+    6 Error(s)
+
+Time Elapsed 00:00:00.78
+
+
+--- STDERR ---
+
