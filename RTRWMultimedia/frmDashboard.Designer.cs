@@ -302,7 +302,7 @@ namespace RTRWMultimedia
             this.btnPengaturan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPengaturan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPengaturan.ForeColor = System.Drawing.Color.White;
-            this.btnPengaturan.Location = new System.Drawing.Point(3, 387);
+            this.btnPengaturan.Location = new System.Drawing.Point(3, 339);
             this.btnPengaturan.Name = "btnPengaturan";
             this.btnPengaturan.Size = new System.Drawing.Size(220, 42);
             this.btnPengaturan.TabIndex = 8;
@@ -319,7 +319,7 @@ namespace RTRWMultimedia
             this.btnKeluar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnKeluar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnKeluar.ForeColor = System.Drawing.Color.White;
-            this.btnKeluar.Location = new System.Drawing.Point(3, 435);
+            this.btnKeluar.Location = new System.Drawing.Point(3, 387);
             this.btnKeluar.Name = "btnKeluar";
             this.btnKeluar.Size = new System.Drawing.Size(220, 42);
             this.btnKeluar.TabIndex = 9;
@@ -362,7 +362,7 @@ namespace RTRWMultimedia
             this.lblSubJudul.Name = "lblSubJudul";
             this.lblSubJudul.Size = new System.Drawing.Size(376, 17);
             this.lblSubJudul.TabIndex = 1;
-            this.lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga RT 04 / RW 02";
+            this.lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga RT 02 / RW 03";
             // 
             // lblJam
             // 
