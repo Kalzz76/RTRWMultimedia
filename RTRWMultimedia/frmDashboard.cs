@@ -1,10 +1,12 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using RTRWMultimedia.Database;
 
 namespace RTRWMultimedia
 {
@@ -25,13 +27,13 @@ namespace RTRWMultimedia
             // 2. Load Assets Gambar
             LoadImageAssets();
 
-            // 3. Populate Pengumuman
+            // 3. Populate Pengumuman dari Database SQL
             PopulateAnnouncements();
 
             // 4. Populate Chart Iuran
             PopulateChartData();
 
-            // 5. Populate DataGridView Transaksi
+            // 5. Populate DataGridView Transaksi dari Database SQL
             PopulateTransactionGrid();
         }
 
@@ -64,7 +66,6 @@ namespace RTRWMultimedia
             }
             catch (Exception ex)
             {
-                // Soft fallback logging
                 Console.WriteLine("Note loading assets: " + ex.Message);
             }
         }
@@ -72,7 +73,49 @@ namespace RTRWMultimedia
         private void PopulateAnnouncements()
         {
             rtbPengumuman.Clear();
-            
+
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT TOP 5 judul, isi_pengumuman, tanggal_posting FROM tb_pengumuman ORDER BY id_pengumuman DESC";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            bool hasData = false;
+                            while (rd.Read())
+                            {
+                                hasData = true;
+                                string judul = rd["judul"].ToString();
+                                string isi = rd["isi_pengumuman"].ToString();
+
+                                rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+                                rtbPengumuman.SelectionColor = Color.FromArgb(15, 118, 110);
+                                rtbPengumuman.AppendText("📢  " + judul.ToUpper() + "\n");
+
+                                rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+                                rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
+                                rtbPengumuman.AppendText(isi + "\n\n");
+                            }
+
+                            if (!hasData)
+                            {
+                                AddDefaultAnnouncements();
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                AddDefaultAnnouncements();
+            }
+        }
+
+        private void AddDefaultAnnouncements()
+        {
             rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             rtbPengumuman.SelectionColor = Color.FromArgb(15, 118, 110);
             rtbPengumuman.AppendText("📌  KERJA BAKTI LINGKUNGAN RT 04\n");
@@ -86,13 +129,6 @@ namespace RTRWMultimedia
             rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
             rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
             rtbPengumuman.AppendText("Hari/Tgl: Sabtu, 22 Agustus 2026 di Balai Warga RT 04.\nAgenda: Pembahasan Kas & Pembangunan Taman Warga.\n\n");
-
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            rtbPengumuman.SelectionColor = Color.FromArgb(217, 119, 6);
-            rtbPengumuman.AppendText("👶  POSYANDU BALITA & LANSIA\n");
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
-            rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
-            rtbPengumuman.AppendText("Rabu, 26 Agustus 2026 di Pos Ronda Utama RT 04.");
         }
 
         private void PopulateChartData()
@@ -129,12 +165,39 @@ namespace RTRWMultimedia
             dt.Columns.Add("Nominal", typeof(string));
             dt.Columns.Add("Status", typeof(string));
 
-            dt.Rows.Add(1, "12/08/2026", "Budi Santoso", "Agustus", "Rp 50.000", "Lunas");
-            dt.Rows.Add(2, "11/08/2026", "Siti Rahma", "Agustus", "Rp 50.000", "Lunas");
-            dt.Rows.Add(3, "10/08/2026", "Ahmad Fauzi", "Agustus", "Rp 50.000", "Lunas");
-            dt.Rows.Add(4, "09/08/2026", "Dede Kurniawan", "Agustus", "Rp 50.000", "Lunas");
-            dt.Rows.Add(5, "08/08/2026", "Eka Wijaya", "Agustus", "Rp 50.000", "Lunas");
-            dt.Rows.Add(6, "07/08/2026", "Hendra Pratama", "Juli", "Rp 50.000", "Lunas");
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT TOP 10 nama_warga, bulan, nominal, tanggal_bayar, status_bayar FROM tb_iuran ORDER BY id_iuran DESC";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            int no = 1;
+                            while (rd.Read())
+                            {
+                                string nama = rd["nama_warga"].ToString();
+                                string bulan = rd["bulan"].ToString();
+                                int nominalInt = Convert.ToInt32(rd["nominal"]);
+                                string nominalStr = "Rp " + nominalInt.ToString("N0", idCulture);
+                                string status = rd["status_bayar"].ToString();
+                                string tgl = rd["tanggal_bayar"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_bayar"]).ToString("dd/MM/yyyy") : "-";
+
+                                dt.Rows.Add(no++, tgl, nama, bulan, nominalStr, status);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback sample data if connection fails
+                dt.Rows.Add(1, "12/08/2026", "Budi Santoso", "Agustus", "Rp 50.000", "Lunas");
+                dt.Rows.Add(2, "11/08/2026", "Siti Rahma", "Agustus", "Rp 50.000", "Lunas");
+                dt.Rows.Add(3, "10/08/2026", "Ahmad Fauzi", "Agustus", "Rp 50.000", "Lunas");
+            }
 
             dgvTransaksi.DataSource = dt;
         }

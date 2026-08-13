@@ -1,0 +1,620 @@
+=== PAGE 1 ===
+MODUL LANJUTAN :  
+ 
+Proyek: Aplikasi Pengelolaan RT/RW Berbasis Multimedia 
+Kelas XII Rekayasa Perangkat Lunak (RPL) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Modul 3 :  
+A. TUJUAN PEMBELAJARAN 
+Setelah menyelesaikan modul ini, siswa mampu: 
+1. Membuat database menggunakan SQL Server.  
+2. Membuat tabel sesuai kebutuhan aplikasi.  
+3. Menentukan Primary Key dan Identity.  
+4. Menambahkan data awal ke dalam tabel.  
+5. Menguji query SQL.  
+6. Menyiapkan database untuk dihubungkan dengan Visual Studio 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 2 ===
+B. ANALISIS KEBUTUHAN DATABASE 
+Sebelum membuat database, siswa harus memahami data yang akan dikelola aplikasi. 
+Data yang Dikelola 
+1. Data Warga 
+Digunakan untuk menyimpan: 
+• NIK  
+• Nama Warga  
+• Alamat  
+• Nomor HP  
+• Status Aktif 
+2. Data Iuran 
+Digunakan untuk menyimpan: 
+• Nama Warga  
+• Bulan Pembayaran  
+• Nominal  
+• Tanggal Bayar  
+• Status Pembayaran 
+3. Data Pengumuman 
+Digunakan untuk: 
+• Informasi kegiatan RT/RW  
+• Jadwal kerja bakti  
+• Informasi rapat warga 
+4. Data User Login 
+Digunakan untuk: 
+• Login Administrator  
+• Login Operator 
+ 
+Struktur Database 
+DB_RTRW 
+│ 
+├── tb_user 
+├── tb_warga 
+├── tb_iuran 
+└── tb_pengumuman 
+ 
+
+=== PAGE 3 ===
+C. MEMBUAT DATABASE DB_RTRW 
+Langkah 1 
+Buka : SQL Server Management Studio (SSMS) 
+ 
+Langkah 2 
+Pada Object Explorer: Klik Databases , Klik kanan → New Database… 
+Langkah 3 
+- Pada Database Name isi: DB_RTRW 
+- Klik OK 
+Hasil : database baru akan muncul dengan nama DB_RTRW 
+ 
+D. MEMBUAT TABEL USER LOGIN 
+Fungsi : Menyimpan akun pengguna aplikasi. 
+Langkah 1 : Klik DB_RTRW → Klik New Query 
+Langkah 2: Ketik script berikut: 
+USE DB_RTRW 
+GO 
+ 
+CREATE TABLE tb_user 
+( 
+    id_user INT IDENTITY(1,1) PRIMARY KEY, 
+    username VARCHAR(50), 
+    password VARCHAR(100), 
+    level_user VARCHAR(20) 
+) 
+ 
+Langkah 3: Klik Execute atau tombol F5 
+Hasilnya : akan muncul teks “Command(s) completed successfully.” 
+ 
+E. MEMBUAT TABEL WARGA 
+Fungsi : Menyimpan seluruh data warga 
+ 
+ 
+ 
+
+=== PAGE 4 ===
+Berikut query nya : 
+ 
+ 
+ 
+ 
+ 
+Klik Execute 
+ 
+Struktur Tabel 
+Kolom Tipe Data 
+id_warga INT 
+nik VARCHAR(20) 
+nama VARCHAR(100) 
+alamat VARCHAR(200) 
+no_hp VARCHAR(20) 
+status_warga VARCHAR(20) 
+ 
+F. MEMBUAT TABEL IURAN 
+Fungsi: Mencatat pembayaran iuran warga. 
+Query nya :  
+ 
+ 
+ 
+ 
+ 
+ 
+Klik Execute 
+ 
+
+
+=== PAGE 5 ===
+G. MEMBUAT TABEL PENGUMUMAN 
+ 
+Fungsi : Menyimpan informasi kegiatan warga 
+ 
+Query 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Klik Execute 
+ 
+H. MEMERIKSA TABEL YANG TELAH DIBUAT 
+Pada Object Explorer:  
+ 
+ 
+ 
+Klik kanan Tables → Refresh 
+ 
+Hasil : akan muncul  tb_user , tb_warga, tb_iuran, tb_pengumuman 
+ 
+ 
+ 
+I. MEMASUKKAN DATA USER LOGIN 
+ 
+Query :  
+ 
+ 
+ 
+ 
+Klik Execute 
+ 
+ 
+Mengecek Hasil : SELECT * FROM tb_user 
+Klik Execute 
+ 
+Hasil 
+id_user username password level_user 
+1 admin 123 Administrator 
+ 
+
+
+=== PAGE 6 ===
+J. MEMASUKKAN DATA WARGA 
+ 
+ 
+Query :  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Tambahkan data kedua:  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Melihat Data : SELECT * FROM tb_warga 
+ 
+ 
+ 
+K. MEMASUKKAN DATA IURAN 
+ 
+Query : 
+ 
+INSERT INTO tb_iuran ( nama_warga, bulan, nominal, tanggal_bayar, status_bayar ) VALUES ( 
+'Budi Santoso', 'Januari', 50000, '2026-01-10', 'Lunas' ) 
+ 
+Data kedua : 
+INSERT INTO tb_iuran (nama_warga, bulan, nominal, tanggal_bayar, status_bayar) VALUES ( 
+'Siti Aminah', 'Januari', 50000, '2026-01-15', 'Lunas' ) 
+ 
+Menampilkan data : SELECT * FROM tb_iuran 
+ 
+ 
+L. MEMASUKKAN DATA PENGUMUMAN 
+ 
+Query 
+INSERT INTO tb_pengumuman ( judul, isi_pengumuman, tanggal_posting ) VALUES ( 
+'Kerja Bakti', 'Kerja bakti dilaksanakan hari Minggu pukul 07.00 WIB', GETDATE() ) 
+
+
+=== PAGE 7 ===
+GETDATE() : Mengambil tanggal komputer secara otomatis. 
+ 
+ 
+M. LATIHAN QUERY DASAR 
+Menampilkan Semua Warga : SELECT * FROM tb_warga 
+ 
+Menampilkan Nama dan Nomor HP : SELECT nama,no_hp FROM tb_warga 
+ 
+Menampilkan Warga Aktif : SELECT * FROM tb_warga WHERE status_warga='Aktif' 
+ 
+Menampilkan Iuran Lunas : ??????? 
+ 
+ 
+ 
+N. BACKUP DATABASE 
+ 
+Langkah : Klik kanan DB_RTRW → Tasks → Back Up… 
+Pilih : Full Backup , Klik OK 
+ 
+ 
+TUGAS PRAKTIKUM 
+1. Tambahkan 5 data warga baru.  
+2. Tambahkan 5 data iuran baru.  
+3. Tambahkan 3 pengumuman baru.  
+4. Tampilkan seluruh warga aktif.  
+5. Ubah nomor HP salah satu warga.  
+6. Hapus satu data pengumuman.  
+7. Lakukan backup database. 
+ 
+HASIL YANG HARUS DICAPAI 
+Pada akhir Modul 3 siswa telah memiliki: 
+✓ Database DB_RTRW 
+✓ Tabel User Login 
+✓ Tabel Warga 
+✓ Tabel Iuran 
+✓ Tabel Pengumuman 
+✓ Data Awal Sistem 
+✓ Kemampuan menjalankan query SQL dasar 
+✓ Backup Database 
+
+=== PAGE 8 ===
+Modul 4 – Menghubungkan Visual Studio dengan SQL Server dan 
+Membuat Form Login 
+ 
+A. TUJUAN PEMBELAJARAN 
+Setelah menyelesaikan modul ini, siswa mampu: 
+1. Memahami konsep koneksi database.  
+2. Menambahkan library SQL Server ke project.  
+3. Membuat Class Koneksi.  
+4. Melakukan uji koneksi ke database.  
+5. Membuat Form Login.  
+6. Melakukan validasi username dan password.  
+7. Membuka Dashboard setelah login berhasil. 
+B. KONSEP KONEKSI DATABASE 
+Pada aplikasi desktop, data tidak dapat langsung diambil dari SQL Server.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Microsoft menyediakan class SqlConnection yang digunakan untuk menghubungkan aplikasi dengan 
+database. 
+ 
+ 
+C. MEMBUAT FOLDER DATABASE 
+ 
+Langkah 1 : Buka Solution Explorer (biasanya ada disebelah kanan Visual Studio) 
+Langkah 2 : Klik kanan nama project  RTRWMultimedia → Add → New Folder 
+Langkah 3 : ubah nama folder menjadi Database 
+ 
+Hasilnya :  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 9 ===
+D. MENAMBAHKAN LIBRARY SQL SERVER 
+ 
+Langkah 1 : Buka file frmDashboard.cs 
+Langkah 2 : Pada bagian atas file tambahkan  
+using System.Data; 
+using System.Data.SqlClient; 
+ 
+E. MEMBUAT CLASS KONEKSI 
+Langkah 1: Klik kanan folder Database → Add → Class 
+Langkah 2 : Nama Class → Koneksi.cs → klik Add 
+Langkah 3 : Hapus seluruh isi file , Ganti kode dengan ini :  
+ 
+using System.Data.SqlClient; 
+ 
+namespace RTRWMultimedia.Database 
+{ 
+    public class Koneksi 
+    { 
+        public static SqlConnection GetConnection() 
+        { 
+            SqlConnection conn = 
+            new SqlConnection( 
+            @"Data Source=.\SQLEXPRESS; 
+            Initial Catalog=DB_RTRW; 
+            Integrated Security=True"); 
+ 
+            return conn; 
+        } 
+    } 
+} 
+ 
+ 
+F. MENGETAHUI NAMA SERVER SQL SERVER 
+Jika koneksi gagal, periksa nama server. 
+Langkah 1 : Buka SQL Server Management Studio 
+Langkah 2 : Lihat bagian: Object Explorer (Contoh : DESKTOP-RPL01\SQLEXPRESS) 
+Langkah 3 : sesuaikan pada Data Source= 
+
+=== PAGE 10 ===
+G. MEMBUAT FORM LOGIN 
+ 
+Langkah 1: Klik kanan project → Add → Windows Form. Nama form : frmLogin.cs , Klik Add 
+ 
+ 
+H. MENGATUR PROPERTY FORM LOGIN 
+Klik area kosong Form. Tekan F4 
+Ubah Property 
+Property Nilai 
+Name frmLogin 
+Text Login Sistem RT/RW 
+StartPosition CenterScreen 
+FormBorderStyle FixedSingle 
+MaximizeBox False 
+ 
+I. MENAMBAHKAN KOMPONEN LOGIN 
+Menambahkan komponen berikut :  
+1) Label Username. Toolbox : Label  
+ 
+ 
+ 
+2) TextBox Username. Toolbox : TextBox 
+Property Nilai 
+Name txtUsername 
+Width 250 
+ 
+3) TextBox Password. Toolbox : Label 
+Property Nilai 
+Name txtPassword 
+Width 250 
+PasswordChar * 
+ 
+ 
+ 
+Property Nilai 
+Name lblUser 
+Text Username 
+
+=== PAGE 11 ===
+ 
+ 
+4) Tombol Login. Toolbox : Button 
+Property Nilai 
+Name btnLogin 
+Text LOGIN 
+Width 120 
+ 
+ 
+5) Tombol Keluar. Toolbox : Button 
+ 
+Property Nilai 
+Name btnKeluar 
+Text KELUAR 
+Width 120 
+ 
+ 
+J. MEMBUAT TABEL USER LOGIN 
+ 
+Pastikan tabel sudah ada. Jika belum ada , maka jalankan :  
+CREATE TABLE tb_user 
+( 
+ id_user INT IDENTITY(1,1) PRIMARY KEY, 
+ username VARCHAR(50), 
+ password VARCHAR(50), 
+ level_user VARCHAR(20) 
+) 
+ 
+ 
+Menambahkan User Admin:  
+INSERT INTO tb_user 
+(username,password,level_user) 
+VALUES 
+('admin','123','Administrator') 
+ 
+ 
+ 
+K. MEMBUAT EVENT LOGIN 
+- Klik ganda tombol Login 
+ 
+Visual studio membuat : 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 12 ===
+Tambahkan :  
+using RTRWMultimedia.Database; 
+using System.Data.SqlClient;  
+ 
+Isi event : 
+private void btnLogin_Click( 
+object sender, 
+EventArgs e) 
+{ 
+    SqlConnection conn = 
+    Koneksi.GetConnection(); 
+ 
+    conn.Open(); 
+ 
+    string sql = 
+    "SELECT * FROM tb_user " + 
+    "WHERE username=@user " + 
+    "AND password=@pass"; 
+ 
+    SqlCommand cmd = 
+    new SqlCommand(sql, conn); 
+ 
+    cmd.Parameters.AddWithValue( 
+    "@user", 
+    txtUsername.Text); 
+ 
+    cmd.Parameters.AddWithValue( 
+    "@pass", 
+    txtPassword.Text); 
+ 
+    SqlDataReader rd = 
+    cmd.ExecuteReader(); 
+ 
+    if (rd.Read()) 
+    { 
+        MessageBox.Show( 
+        "Login Berhasil"); 
+ 
+        frmDashboard f = 
+        new frmDashboard(); 
+ 
+        f.Show(); 
+ 
+        this.Hide(); 
+    } 
+    else 
+    { 
+        MessageBox.Show( 
+        "Username atau Password Salah"); 
+
+=== PAGE 13 ===
+    } 
+ 
+    conn.Close(); 
+} 
+ 
+ 
+ 
+L. MEMBUAT EVENT TOMBOL KELUAR 
+- Klik Ganda tombol KELUAR 
+- Isi dengan :  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+M. MENJADIKAN LOGIN FORM PERTAMA 
+ 
+- Buka Program.cs 
+- Cari :  
+- Application.Run( 
+- new frmDashboard()); 
+- Ubah menjadi : 
+- Application.Run 
+- ( new frmLogin()); 
+-  
+ 
+ 
+ 
+N. MEMBUAT TOMBOL UJI KONEKSI 
+ 
+Tambahkan Button  
+Property Nilai 
+Name btnTesKoneksi 
+Text TES KONEKSI 
+ 
+Klik ganda tombol tersebut. Lalu isi dengan : 
+private void btnTesKoneksi_Click( 
+object sender, 
+EventArgs e) 
+{ 
+    try 
+    { 
+        SqlConnection conn = 
+
+
+=== PAGE 14 ===
+        Koneksi.GetConnection(); 
+ 
+        conn.Open(); 
+ 
+        MessageBox.Show( 
+        "Koneksi Berhasil"); 
+ 
+        conn.Close(); 
+    } 
+    catch(Exception ex) 
+    { 
+        MessageBox.Show( 
+        ex.Message); 
+    } 
+} 
+ 
+ 
+O. Menjalankan aplikasi 
+- Tekan F5 
+- Masukkan username = admin , password = 123  
+- Klik Login 
+ 
+ 
+P. TROUBLESHOOTING 
+Error : Cannot open database DB_RTRW 
+Penyebab: 
+Database belum dibuat. 
+Solusi: 
+Pastikan Modul 3 telah selesai. 
+ 
+Error : Server not found 
+Penyebab: Nama SQL Server salah. 
+Solusi : Periksa Data Source 
+ 
+ 
+ 
+
+=== PAGE 15 ===
+Q. TUGAS PRAKTIKUM 
+1. Tambahkan user:  
+o operator  
+o ketua_rt  
+2. Uji login setiap akun.  
+3. Tambahkan logo RT/RW pada form login.  
+4. Tambahkan label tanggal dan jam.  
+5. Ubah warna tombol login sesuai identitas sekolah 
+ 
+R. HASIL YANG HARUS DICAPAI 
+✓ Class Koneksi berhasil dibuat 
+✓ SQL Server terhubung dengan Visual Studio 
+✓ Form Login berhasil dibuat 
+✓ Login berhasil menggunakan database 
+✓ Dashboard dapat dibuka setelah login 
+✓ Tombol Keluar berfungsi 
+✓ Uji koneksi berhasil 
+ 
+ 
+ 
+ 
+ 
+

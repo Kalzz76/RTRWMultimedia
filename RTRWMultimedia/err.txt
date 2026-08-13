@@ -1,0 +1,27 @@
+  Determining projects to restore...
+  Nothing to do. None of the projects specified contain packages to restore.
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103: Invalid Resx file. System.Xml.XmlException: The 'root' start tag on line 2 position 2 does not match the end tag of 'metadata'. Line 124, position 5. [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.Throw(Exception e) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.Throw(String res, String[] args) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ThrowTagMismatch(NodeData startTag) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ParseEndElement() [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ParseElementContent() [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at Microsoft.Build.Tasks.ResourceHandling.MSBuildResXReader.ReadResources(Stream s, String filename, Boolean pathsRelativeToBasePath, TaskLoggingHelper log, Boolean logWarningForBinaryFormatter) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+
+Build FAILED.
+
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103: Invalid Resx file. System.Xml.XmlException: The 'root' start tag on line 2 position 2 does not match the end tag of 'metadata'. Line 124, position 5. [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.Throw(Exception e) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.Throw(String res, String[] args) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ThrowTagMismatch(NodeData startTag) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ParseEndElement() [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.XmlTextReaderImpl.ParseElementContent() [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.resx : error MSB3103:    at Microsoft.Build.Tasks.ResourceHandling.MSBuildResXReader.ReadResources(Stream s, String filename, Boolean pathsRelativeToBasePath, TaskLoggingHelper log, Boolean logWarningForBinaryFormatter) [e:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:00.64
