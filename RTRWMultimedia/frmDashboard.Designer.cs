@@ -47,7 +47,6 @@ namespace RTRWMultimedia
             this.btnSurat = new System.Windows.Forms.Button();
             this.btnLaporan = new System.Windows.Forms.Button();
             this.btnGaleri = new System.Windows.Forms.Button();
-            this.btnBackup = new System.Windows.Forms.Button();
             this.btnPengaturan = new System.Windows.Forms.Button();
             this.btnKeluar = new System.Windows.Forms.Button();
             this.pnlHeader = new System.Windows.Forms.Panel();
@@ -169,7 +168,6 @@ namespace RTRWMultimedia
             this.flpNavMenu.Controls.Add(this.btnSurat);
             this.flpNavMenu.Controls.Add(this.btnLaporan);
             this.flpNavMenu.Controls.Add(this.btnGaleri);
-            this.flpNavMenu.Controls.Add(this.btnBackup);
             this.flpNavMenu.Controls.Add(this.btnPengaturan);
             this.flpNavMenu.Controls.Add(this.btnKeluar);
             this.flpNavMenu.Location = new System.Drawing.Point(15, 105);
@@ -295,23 +293,6 @@ namespace RTRWMultimedia
             this.btnGaleri.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnGaleri.UseVisualStyleBackColor = false;
             this.btnGaleri.Click += new System.EventHandler(this.NavButton_Click);
-            // 
-            // btnBackup
-            // 
-            this.btnBackup.BackColor = System.Drawing.Color.Transparent;
-            this.btnBackup.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBackup.FlatAppearance.BorderSize = 0;
-            this.btnBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBackup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBackup.ForeColor = System.Drawing.Color.White;
-            this.btnBackup.Location = new System.Drawing.Point(3, 339);
-            this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(220, 42);
-            this.btnBackup.TabIndex = 7;
-            this.btnBackup.Text = "  💾   Backup Database";
-            this.btnBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBackup.UseVisualStyleBackColor = false;
-            this.btnBackup.Click += new System.EventHandler(this.NavButton_Click);
             // 
             // btnPengaturan
             // 
@@ -870,7 +851,6 @@ namespace RTRWMultimedia
         private System.Windows.Forms.Button btnSurat;
         private System.Windows.Forms.Button btnLaporan;
         private System.Windows.Forms.Button btnGaleri;
-        private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Button btnPengaturan;
         private System.Windows.Forms.Button btnKeluar;
 
