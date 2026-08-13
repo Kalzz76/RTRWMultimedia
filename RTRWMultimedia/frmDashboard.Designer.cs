@@ -412,12 +412,14 @@ namespace RTRWMultimedia
             // picLogoSekolah
             // 
             this.picLogoSekolah.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picLogoSekolah.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLogoSekolah.Location = new System.Drawing.Point(855, 15);
             this.picLogoSekolah.Name = "picLogoSekolah";
             this.picLogoSekolah.Size = new System.Drawing.Size(70, 70);
             this.picLogoSekolah.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoSekolah.TabIndex = 4;
             this.picLogoSekolah.TabStop = false;
+            this.picLogoSekolah.Click += new System.EventHandler(this.picLogoSekolah_Click);
             // 
             // pnlContent
             // 
@@ -824,6 +826,7 @@ namespace RTRWMultimedia
             this.Text = "Aplikasi Pengelolaan RT/RW - RT 04 / RW 02 Sukamaju";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmDashboard_Load);
+            this.Resize += new System.EventHandler(this.frmDashboard_Resize);
             this.pnlMenu.ResumeLayout(false);
             this.pnlMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();

@@ -62,6 +62,24 @@
     <Compile Include="frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProfil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProfil.Designer.cs">
+      <DependentUpon>frmProfil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPengaturan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPengaturan.Designer.cs">
+      <DependentUpon>frmPengaturan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWarga.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWarga.Designer.cs">
+      <DependentUpon>frmWarga.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmDashboard.resx">
@@ -69,6 +87,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProfil.resx">
+      <DependentUpon>frmProfil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPengaturan.resx">
+      <DependentUpon>frmPengaturan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWarga.resx">
+      <DependentUpon>frmWarga.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

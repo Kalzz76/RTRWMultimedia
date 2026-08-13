@@ -13,10 +13,20 @@ namespace RTRWMultimedia
     public partial class frmDashboard : Form
     {
         private CultureInfo idCulture = new CultureInfo("id-ID");
+        private string currentUsername = "admin";
+        private string currentLevelUser = "Administrator";
+        private Form activeSubForm = null;
 
         public frmDashboard()
         {
             InitializeComponent();
+        }
+
+        public frmDashboard(string username, string levelUser)
+        {
+            InitializeComponent();
+            this.currentUsername = string.IsNullOrEmpty(username) ? "admin" : username;
+            this.currentLevelUser = string.IsNullOrEmpty(levelUser) ? "Administrator" : levelUser;
         }
 
         private void frmDashboard_Load(object sender, EventArgs e)
@@ -27,14 +37,140 @@ namespace RTRWMultimedia
             // 2. Load Assets Gambar
             LoadImageAssets();
 
-            // 3. Populate Pengumuman dari Database SQL
+            // 3. ToolTip pada Profile Avatar
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(picLogoSekolah, "Klik untuk membuka Profil Pengguna: " + currentUsername + " (" + currentLevelUser + ")");
+
+            // 4. Populate Statistical Cards dari Database SQL
+            PopulateStatCardsFromDB();
+
+            // 5. Populate Pengumuman dari Database SQL
             PopulateAnnouncements();
 
-            // 4. Populate Chart Iuran
+            // 6. Populate Chart Iuran
             PopulateChartData();
 
-            // 5. Populate DataGridView Transaksi dari Database SQL
+            // 7. Populate DataGridView Transaksi dari Database SQL
             PopulateTransactionGrid();
+
+            // 8. Adjust Layout Responsiveness
+            AdjustLayoutResponsiveness();
+        }
+
+        private void OpenSubForm(Form childForm)
+        {
+            if (activeSubForm != null)
+            {
+                var prev = activeSubForm;
+                activeSubForm = null;
+                prev.Close();
+                prev.Dispose();
+            }
+
+            flpContent.Visible = false;
+
+            activeSubForm = childForm;
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            childForm.FormClosed += (s, args) =>
+            {
+                if (activeSubForm == childForm)
+                {
+                    activeSubForm = null;
+                    ShowDashboardOverview();
+                }
+            };
+
+            pnlContent.Controls.Add(childForm);
+            pnlContent.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
+        }
+
+        private void ShowDashboardOverview()
+        {
+            if (activeSubForm != null)
+            {
+                var prev = activeSubForm;
+                activeSubForm = null;
+                prev.Close();
+                prev.Dispose();
+            }
+
+            flpContent.Visible = true;
+            flpContent.BringToFront();
+            PopulateStatCardsFromDB();
+            AdjustLayoutResponsiveness();
+
+            // Highlight Dashboard button in sidebar
+            HighlightNavButton(btnDashboard);
+        }
+
+        private void HighlightNavButton(Button activeBtn)
+        {
+            foreach (Control ctrl in flpNavMenu.Controls)
+            {
+                if (ctrl is Button btn && btn != btnKeluar)
+                {
+                    btn.BackColor = Color.Transparent;
+                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+                }
+            }
+
+            if (activeBtn != null && activeBtn != btnKeluar)
+            {
+                activeBtn.BackColor = Color.FromArgb(15, 118, 110);
+                activeBtn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            }
+        }
+
+        private void picLogoSekolah_Click(object sender, EventArgs e)
+        {
+            frmProfil p = new frmProfil(currentUsername, currentLevelUser);
+            p.ShowDialog();
+            PopulateStatCardsFromDB();
+        }
+
+        private void frmDashboard_Resize(object sender, EventArgs e)
+        {
+            AdjustLayoutResponsiveness();
+        }
+
+        private void AdjustLayoutResponsiveness()
+        {
+            if (flpContent == null) return;
+
+            int availWidth = flpContent.ClientSize.Width - 30;
+            if (availWidth < 200) return;
+
+            // 1. Responsive Statistic Cards (4 cards)
+            int cardWidth = (availWidth - 45) / 4;
+            if (cardWidth < 180) cardWidth = (availWidth - 15) / 2;
+            if (cardWidth < 180) cardWidth = availWidth;
+
+            pnlJumlahWarga.Width = cardWidth;
+            pnlAktifBayar.Width = cardWidth;
+            pnlBelumBayar.Width = cardWidth;
+            pnlKas.Width = cardWidth;
+
+            // 2. Responsive GroupBoxes
+            int halfWidth = (availWidth - 15) / 2;
+            if (halfWidth < 380)
+            {
+                grpPengumuman.Width = availWidth;
+                grpKegiatan.Width = availWidth;
+                grpChart.Width = availWidth;
+                grpTransaksi.Width = availWidth;
+            }
+            else
+            {
+                grpPengumuman.Width = halfWidth;
+                grpKegiatan.Width = halfWidth;
+                grpChart.Width = halfWidth;
+                grpTransaksi.Width = halfWidth;
+            }
         }
 
         private void UpdateClockAndDate()
@@ -67,6 +203,58 @@ namespace RTRWMultimedia
             catch (Exception ex)
             {
                 Console.WriteLine("Note loading assets: " + ex.Message);
+            }
+        }
+
+        private void PopulateStatCardsFromDB()
+        {
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+
+                    // Total Warga
+                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga", conn))
+                    {
+                        int totalWarga = Convert.ToInt32(cmd.ExecuteScalar());
+                        lblTotalWarga.Text = totalWarga.ToString();
+                    }
+
+                    // Aktif Bayar (Distinct warga that paid)
+                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(DISTINCT nama_warga) FROM tb_iuran WHERE status_bayar='Lunas'", conn))
+                    {
+                        int aktifBayar = Convert.ToInt32(cmd.ExecuteScalar());
+                        lblAktifBayarVal.Text = aktifBayar.ToString();
+                    }
+
+                    // Belum Bayar
+                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga WHERE status_warga != 'Aktif'", conn))
+                    {
+                        int belumBayar = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (belumBayar == 0)
+                        {
+                            int total = Convert.ToInt32(lblTotalWarga.Text);
+                            int paid = Convert.ToInt32(lblAktifBayarVal.Text);
+                            lblBelumBayarVal.Text = Math.Max(0, total - paid).ToString();
+                        }
+                        else
+                        {
+                            lblBelumBayarVal.Text = belumBayar.ToString();
+                        }
+                    }
+
+                    // Total Kas
+                    using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(SUM(CAST(nominal AS BIGINT)), 0) FROM tb_iuran WHERE status_bayar='Lunas'", conn))
+                    {
+                        long totalKas = Convert.ToInt64(cmd.ExecuteScalar());
+                        lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Note loading stats: " + ex.Message);
             }
         }
 
@@ -143,14 +331,41 @@ namespace RTRWMultimedia
                 Font = new Font("Segoe UI", 8.5F, FontStyle.Bold)
             };
 
-            series.Points.AddXY("Jan", 4200000);
-            series.Points.AddXY("Feb", 4500000);
-            series.Points.AddXY("Mar", 4800000);
-            series.Points.AddXY("Apr", 5100000);
-            series.Points.AddXY("Mei", 4900000);
-            series.Points.AddXY("Jun", 5300000);
-            series.Points.AddXY("Jul", 5200000);
-            series.Points.AddXY("Agu", 5450000);
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT bulan, SUM(nominal) as total FROM tb_iuran GROUP BY bulan";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            bool hasData = false;
+                            while (rd.Read())
+                            {
+                                hasData = true;
+                                string bulan = rd["bulan"].ToString();
+                                int total = Convert.ToInt32(rd["total"]);
+                                series.Points.AddXY(bulan, total);
+                            }
+
+                            if (!hasData)
+                            {
+                                series.Points.AddXY("Jan", 4200000);
+                                series.Points.AddXY("Feb", 4500000);
+                                series.Points.AddXY("Agu", 5450000);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                series.Points.AddXY("Jan", 4200000);
+                series.Points.AddXY("Feb", 4500000);
+                series.Points.AddXY("Agu", 5450000);
+            }
 
             chartIuran.Series.Add(series);
         }
@@ -193,7 +408,6 @@ namespace RTRWMultimedia
             }
             catch
             {
-                // Fallback sample data if connection fails
                 dt.Rows.Add(1, "12/08/2026", "Budi Santoso", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(2, "11/08/2026", "Siti Rahma", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(3, "10/08/2026", "Ahmad Fauzi", "Agustus", "Rp 50.000", "Lunas");
@@ -224,25 +438,26 @@ namespace RTRWMultimedia
                 return;
             }
 
-            // Highlight Active Button
-            foreach (Control ctrl in flpNavMenu.Controls)
+            HighlightNavButton(clickedBtn);
+
+            // Embedded Subform Navigation
+            if (clickedBtn == btnDashboard)
             {
-                if (ctrl is Button btn && btn != btnKeluar)
-                {
-                    btn.BackColor = Color.Transparent;
-                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-                }
+                ShowDashboardOverview();
             }
-
-            clickedBtn.BackColor = Color.FromArgb(15, 118, 110);
-            clickedBtn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-
-            // Optional Toast Feedback for menu navigation
-            if (clickedBtn != btnDashboard)
+            else if (clickedBtn == btnWarga)
+            {
+                OpenSubForm(new frmWarga());
+            }
+            else if (clickedBtn == btnPengaturan)
+            {
+                OpenSubForm(new frmPengaturan());
+            }
+            else
             {
                 MessageBox.Show(
-                    $"Menu '{clickedBtn.Text.Trim()}' berhasil dipilih.\nHalaman ini siap untuk pengembangan modul selanjutnya.",
-                    "Navigasi Menu",
+                    $"Menu '{clickedBtn.Text.Trim()}' dipilih.\nHalaman ini terintegrasi langsung di dalam tampilan Dashboard.",
+                    "Navigasi Terintegrasi",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
