@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace RTRWMultimedia
@@ -192,6 +191,12 @@ namespace RTRWMultimedia
         private void lblSubJudul_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnWarga_Click(object sender, EventArgs e)
+        {
+            frmWarga f = new frmWarga();
+            f.ShowDialog();
         }
     }
 }

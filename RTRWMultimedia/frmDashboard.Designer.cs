@@ -210,7 +210,7 @@ namespace RTRWMultimedia
             this.btnWarga.Text = "  👥   Data Warga";
             this.btnWarga.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnWarga.UseVisualStyleBackColor = false;
-            this.btnWarga.Click += new System.EventHandler(this.NavButton_Click);
+            this.btnWarga.Click += new System.EventHandler(this.btnWarga_Click);
             // 
             // btnIuran
             // 

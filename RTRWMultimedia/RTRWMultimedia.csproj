@@ -62,6 +62,12 @@
     <Compile Include="frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmWarga.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWarga.Designer.cs">
+      <DependentUpon>frmWarga.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmDashboard.resx">
