@@ -293,10 +293,5 @@ namespace RTRWMultimedia
                 MessageBox.Show("Gagal melakukan Backup Database:\n" + ex.Message + "\n\n(Catatan: Layanan SQL Server memerlukan hak akses simpan berkas di lokasi tujuan).", "Backup Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-        private void btnTutup_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
     }
 }

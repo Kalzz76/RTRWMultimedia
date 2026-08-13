@@ -28,12 +28,15 @@ namespace RTRWMultimedia
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblSubtitle = new System.Windows.Forms.Label();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.pnlTopHeader = new System.Windows.Forms.Panel();
+            this.lblHeaderTitle = new System.Windows.Forms.Label();
+            this.lblHeaderSub = new System.Windows.Forms.Label();
+            this.pnlMain = new System.Windows.Forms.Panel();
+            this.pnlSettingsCard = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabControl();
-            
-            // Tab 1: Profil Wilayah
             this.tabProfil = new System.Windows.Forms.TabPage();
             this.lblNamaRTRW = new System.Windows.Forms.Label();
             this.txtNamaRTRW = new System.Windows.Forms.TextBox();
@@ -48,19 +51,17 @@ namespace RTRWMultimedia
             this.lblSekretaris = new System.Windows.Forms.Label();
             this.txtSekretaris = new System.Windows.Forms.TextBox();
             this.btnSimpanProfil = new System.Windows.Forms.Button();
-
-            // Tab 2: Master Iuran
             this.tabIuran = new System.Windows.Forms.TabPage();
+            this.pnlNoteIuran = new System.Windows.Forms.Panel();
+            this.lblNoteIuran = new System.Windows.Forms.Label();
             this.lblNominalIuran = new System.Windows.Forms.Label();
             this.txtNominalIuran = new System.Windows.Forms.TextBox();
             this.lblJatuhTempo = new System.Windows.Forms.Label();
             this.nudJatuhTempo = new System.Windows.Forms.NumericUpDown();
-            this.lblNoteIuran = new System.Windows.Forms.Label();
             this.btnSimpanIuran = new System.Windows.Forms.Button();
-
-            // Tab 3: Manajemen User
             this.tabUser = new System.Windows.Forms.TabPage();
-            this.dgvUser = new System.Windows.Forms.DataGridView();
+            this.pnlUserRight = new System.Windows.Forms.Panel();
+            this.lblUserFormTitle = new System.Windows.Forms.Label();
             this.lblNewUser = new System.Windows.Forms.Label();
             this.txtNewUser = new System.Windows.Forms.TextBox();
             this.lblNewPass = new System.Windows.Forms.Label();
@@ -69,9 +70,11 @@ namespace RTRWMultimedia
             this.cboNewLevel = new System.Windows.Forms.ComboBox();
             this.btnTambahUser = new System.Windows.Forms.Button();
             this.btnHapusUser = new System.Windows.Forms.Button();
-
-            // Tab 4: Database & Backup
+            this.pnlUserLeft = new System.Windows.Forms.Panel();
+            this.lblUserListTitle = new System.Windows.Forms.Label();
+            this.dgvUser = new System.Windows.Forms.DataGridView();
             this.tabDatabase = new System.Windows.Forms.TabPage();
+            this.pnlDbStatus = new System.Windows.Forms.Panel();
             this.lblDbInfo = new System.Windows.Forms.Label();
             this.lblDbServer = new System.Windows.Forms.Label();
             this.txtDbServer = new System.Windows.Forms.TextBox();
@@ -79,66 +82,98 @@ namespace RTRWMultimedia
             this.txtDbName = new System.Windows.Forms.TextBox();
             this.btnTesKoneksi = new System.Windows.Forms.Button();
             this.btnBackupDB = new System.Windows.Forms.Button();
-
-            // Form Footer Buttons
-            this.pnlFooter = new System.Windows.Forms.Panel();
-            this.btnTutup = new System.Windows.Forms.Button();
-
-            this.pnlHeader.SuspendLayout();
+            this.pnlTopHeader.SuspendLayout();
+            this.pnlMain.SuspendLayout();
+            this.pnlSettingsCard.SuspendLayout();
             this.tabSettings.SuspendLayout();
             this.tabProfil.SuspendLayout();
             this.tabIuran.SuspendLayout();
+            this.pnlNoteIuran.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudJatuhTempo)).BeginInit();
             this.tabUser.SuspendLayout();
+            this.pnlUserRight.SuspendLayout();
+            this.pnlUserLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).BeginInit();
             this.tabDatabase.SuspendLayout();
-            this.pnlFooter.SuspendLayout();
+            this.pnlDbStatus.SuspendLayout();
             this.SuspendLayout();
 
-            // pnlHeader
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Controls.Add(this.lblSubtitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(780, 80);
-            this.pnlHeader.TabIndex = 0;
+            // 
+            // pnlTopHeader
+            // 
+            this.pnlTopHeader.BackColor = System.Drawing.Color.White;
+            this.pnlTopHeader.Controls.Add(this.lblHeaderTitle);
+            this.pnlTopHeader.Controls.Add(this.lblHeaderSub);
+            this.pnlTopHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTopHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlTopHeader.Name = "pnlTopHeader";
+            this.pnlTopHeader.Size = new System.Drawing.Size(960, 60);
+            this.pnlTopHeader.TabIndex = 0;
 
-            // lblTitle
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 18);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(306, 25);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "⚙️ PENGATURAN SISTEM RT/RW";
+            // lblHeaderTitle
+            this.lblHeaderTitle.AutoSize = true;
+            this.lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
+            this.lblHeaderTitle.Location = new System.Drawing.Point(20, 10);
+            this.lblHeaderTitle.Name = "lblHeaderTitle";
+            this.lblHeaderTitle.Size = new System.Drawing.Size(306, 25);
+            this.lblHeaderTitle.TabIndex = 0;
+            this.lblHeaderTitle.Text = "⚙️ PENGATURAN SISTEM RT/RW";
 
-            // lblSubtitle
-            this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(251)))), ((int)(((byte)(241)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(23, 46);
-            this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(434, 15);
-            this.lblSubtitle.TabIndex = 1;
-            this.lblSubtitle.Text = "Konfigurasi Identitas Wilayah, Master Iuran, Manajemen Pengguna & Database SQL";
+            // lblHeaderSub
+            this.lblHeaderSub.AutoSize = true;
+            this.lblHeaderSub.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblHeaderSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            this.lblHeaderSub.Location = new System.Drawing.Point(23, 35);
+            this.lblHeaderSub.Name = "lblHeaderSub";
+            this.lblHeaderSub.Size = new System.Drawing.Size(434, 15);
+            this.lblHeaderSub.TabIndex = 1;
+            this.lblHeaderSub.Text = "Konfigurasi Identitas Wilayah, Master Iuran, Manajemen Pengguna & Database SQL";
 
+            // 
+            // pnlMain
+            // 
+            this.pnlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
+            this.pnlMain.Controls.Add(this.pnlSettingsCard);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(0, 60);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Padding = new System.Windows.Forms.Padding(16);
+            this.pnlMain.Size = new System.Drawing.Size(960, 590);
+            this.pnlMain.TabIndex = 1;
+
+            // 
+            // pnlSettingsCard
+            // 
+            this.pnlSettingsCard.BackColor = System.Drawing.Color.White;
+            this.pnlSettingsCard.Controls.Add(this.tabSettings);
+            this.pnlSettingsCard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSettingsCard.Location = new System.Drawing.Point(16, 16);
+            this.pnlSettingsCard.Name = "pnlSettingsCard";
+            this.pnlSettingsCard.Padding = new System.Windows.Forms.Padding(12);
+            this.pnlSettingsCard.Size = new System.Drawing.Size(928, 558);
+            this.pnlSettingsCard.TabIndex = 0;
+
+            // 
             // tabSettings
+            // 
             this.tabSettings.Controls.Add(this.tabProfil);
             this.tabSettings.Controls.Add(this.tabIuran);
             this.tabSettings.Controls.Add(this.tabUser);
             this.tabSettings.Controls.Add(this.tabDatabase);
             this.tabSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabSettings.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabSettings.Location = new System.Drawing.Point(0, 80);
+            this.tabSettings.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabSettings.ItemSize = new System.Drawing.Size(180, 36);
+            this.tabSettings.Location = new System.Drawing.Point(12, 12);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.SelectedIndex = 0;
-            this.tabSettings.Size = new System.Drawing.Size(780, 420);
-            this.tabSettings.TabIndex = 1;
+            this.tabSettings.Size = new System.Drawing.Size(904, 534);
+            this.tabSettings.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabSettings.TabIndex = 0;
 
-            // ==================== TAB 1: PROFIL WILAYAH ====================
+            // 
+            // tabProfil
+            // 
             this.tabProfil.BackColor = System.Drawing.Color.White;
             this.tabProfil.Controls.Add(this.lblNamaRTRW);
             this.tabProfil.Controls.Add(this.txtNamaRTRW);
@@ -153,55 +188,91 @@ namespace RTRWMultimedia
             this.tabProfil.Controls.Add(this.lblSekretaris);
             this.tabProfil.Controls.Add(this.txtSekretaris);
             this.tabProfil.Controls.Add(this.btnSimpanProfil);
-            this.tabProfil.Location = new System.Drawing.Point(4, 26);
+            this.tabProfil.Location = new System.Drawing.Point(4, 40);
             this.tabProfil.Name = "tabProfil";
-            this.tabProfil.Padding = new System.Windows.Forms.Padding(20);
-            this.tabProfil.Size = new System.Drawing.Size(772, 390);
+            this.tabProfil.Padding = new System.Windows.Forms.Padding(24);
+            this.tabProfil.Size = new System.Drawing.Size(896, 490);
             this.tabProfil.TabIndex = 0;
-            this.tabProfil.Text = " 🏡 Identitas RT/RW ";
+            this.tabProfil.Text = "🏡 Identitas RT/RW";
 
             // Controls for Tab 1
             this.lblNamaRTRW.AutoSize = true;
             this.lblNamaRTRW.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblNamaRTRW.Location = new System.Drawing.Point(25, 25);
+            this.lblNamaRTRW.Location = new System.Drawing.Point(24, 24);
+            this.lblNamaRTRW.Name = "lblNamaRTRW";
+            this.lblNamaRTRW.Size = new System.Drawing.Size(90, 15);
             this.lblNamaRTRW.Text = "Nama RT / RW";
-            this.txtNamaRTRW.Location = new System.Drawing.Point(28, 45);
-            this.txtNamaRTRW.Size = new System.Drawing.Size(330, 25);
+
+            this.txtNamaRTRW.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtNamaRTRW.Location = new System.Drawing.Point(27, 44);
+            this.txtNamaRTRW.Name = "txtNamaRTRW";
+            this.txtNamaRTRW.Size = new System.Drawing.Size(400, 25);
+            this.txtNamaRTRW.TabIndex = 0;
 
             this.lblDesa.AutoSize = true;
             this.lblDesa.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblDesa.Location = new System.Drawing.Point(390, 25);
+            this.lblDesa.Location = new System.Drawing.Point(464, 24);
+            this.lblDesa.Name = "lblDesa";
+            this.lblDesa.Size = new System.Drawing.Size(102, 15);
             this.lblDesa.Text = "Desa / Kelurahan";
-            this.txtDesa.Location = new System.Drawing.Point(393, 45);
-            this.txtDesa.Size = new System.Drawing.Size(330, 25);
+
+            this.txtDesa.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtDesa.Location = new System.Drawing.Point(467, 44);
+            this.txtDesa.Name = "txtDesa";
+            this.txtDesa.Size = new System.Drawing.Size(400, 25);
+            this.txtDesa.TabIndex = 1;
 
             this.lblKecamatan.AutoSize = true;
             this.lblKecamatan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblKecamatan.Location = new System.Drawing.Point(25, 95);
+            this.lblKecamatan.Location = new System.Drawing.Point(24, 94);
+            this.lblKecamatan.Name = "lblKecamatan";
+            this.lblKecamatan.Size = new System.Drawing.Size(68, 15);
             this.lblKecamatan.Text = "Kecamatan";
-            this.txtKecamatan.Location = new System.Drawing.Point(28, 115);
-            this.txtKecamatan.Size = new System.Drawing.Size(330, 25);
+
+            this.txtKecamatan.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtKecamatan.Location = new System.Drawing.Point(27, 114);
+            this.txtKecamatan.Name = "txtKecamatan";
+            this.txtKecamatan.Size = new System.Drawing.Size(400, 25);
+            this.txtKecamatan.TabIndex = 2;
 
             this.lblKota.AutoSize = true;
             this.lblKota.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblKota.Location = new System.Drawing.Point(390, 95);
+            this.lblKota.Location = new System.Drawing.Point(464, 94);
+            this.lblKota.Name = "lblKota";
+            this.lblKota.Size = new System.Drawing.Size(101, 15);
             this.lblKota.Text = "Kota / Kabupaten";
-            this.txtKota.Location = new System.Drawing.Point(393, 115);
-            this.txtKota.Size = new System.Drawing.Size(330, 25);
+
+            this.txtKota.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtKota.Location = new System.Drawing.Point(467, 114);
+            this.txtKota.Name = "txtKota";
+            this.txtKota.Size = new System.Drawing.Size(400, 25);
+            this.txtKota.TabIndex = 3;
 
             this.lblKetuaRT.AutoSize = true;
             this.lblKetuaRT.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblKetuaRT.Location = new System.Drawing.Point(25, 165);
+            this.lblKetuaRT.Location = new System.Drawing.Point(24, 164);
+            this.lblKetuaRT.Name = "lblKetuaRT";
+            this.lblKetuaRT.Size = new System.Drawing.Size(91, 15);
             this.lblKetuaRT.Text = "Nama Ketua RT";
-            this.txtKetuaRT.Location = new System.Drawing.Point(28, 185);
-            this.txtKetuaRT.Size = new System.Drawing.Size(330, 25);
+
+            this.txtKetuaRT.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtKetuaRT.Location = new System.Drawing.Point(27, 184);
+            this.txtKetuaRT.Name = "txtKetuaRT";
+            this.txtKetuaRT.Size = new System.Drawing.Size(400, 25);
+            this.txtKetuaRT.TabIndex = 4;
 
             this.lblSekretaris.AutoSize = true;
             this.lblSekretaris.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblSekretaris.Location = new System.Drawing.Point(390, 165);
+            this.lblSekretaris.Location = new System.Drawing.Point(464, 164);
+            this.lblSekretaris.Name = "lblSekretaris";
+            this.lblSekretaris.Size = new System.Drawing.Size(98, 15);
             this.lblSekretaris.Text = "Nama Sekretaris";
-            this.txtSekretaris.Location = new System.Drawing.Point(393, 185);
-            this.txtSekretaris.Size = new System.Drawing.Size(330, 25);
+
+            this.txtSekretaris.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSekretaris.Location = new System.Drawing.Point(467, 184);
+            this.txtSekretaris.Name = "txtSekretaris";
+            this.txtSekretaris.Size = new System.Drawing.Size(400, 25);
+            this.txtSekretaris.TabIndex = 5;
 
             this.btnSimpanProfil.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
             this.btnSimpanProfil.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -209,50 +280,78 @@ namespace RTRWMultimedia
             this.btnSimpanProfil.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimpanProfil.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSimpanProfil.ForeColor = System.Drawing.Color.White;
-            this.btnSimpanProfil.Location = new System.Drawing.Point(28, 245);
-            this.btnSimpanProfil.Size = new System.Drawing.Size(695, 42);
+            this.btnSimpanProfil.Location = new System.Drawing.Point(27, 245);
+            this.btnSimpanProfil.Name = "btnSimpanProfil";
+            this.btnSimpanProfil.Size = new System.Drawing.Size(840, 44);
+            this.btnSimpanProfil.TabIndex = 6;
             this.btnSimpanProfil.Text = "💾 SIMPAN PROFIL WILAYAH";
             this.btnSimpanProfil.UseVisualStyleBackColor = false;
             this.btnSimpanProfil.Click += new System.EventHandler(this.btnSimpanProfil_Click);
 
-            // ==================== TAB 2: MASTER IURAN ====================
+            // 
+            // tabIuran
+            // 
             this.tabIuran.BackColor = System.Drawing.Color.White;
+            this.tabIuran.Controls.Add(this.pnlNoteIuran);
             this.tabIuran.Controls.Add(this.lblNominalIuran);
             this.tabIuran.Controls.Add(this.txtNominalIuran);
             this.tabIuran.Controls.Add(this.lblJatuhTempo);
             this.tabIuran.Controls.Add(this.nudJatuhTempo);
-            this.tabIuran.Controls.Add(this.lblNoteIuran);
             this.tabIuran.Controls.Add(this.btnSimpanIuran);
-            this.tabIuran.Location = new System.Drawing.Point(4, 26);
+            this.tabIuran.Location = new System.Drawing.Point(4, 40);
             this.tabIuran.Name = "tabIuran";
-            this.tabIuran.Padding = new System.Windows.Forms.Padding(20);
-            this.tabIuran.Size = new System.Drawing.Size(772, 390);
+            this.tabIuran.Padding = new System.Windows.Forms.Padding(24);
+            this.tabIuran.Size = new System.Drawing.Size(896, 490);
             this.tabIuran.TabIndex = 1;
-            this.tabIuran.Text = " 💰 Master Iuran ";
+            this.tabIuran.Text = "💰 Master Iuran";
 
             // Controls for Tab 2
             this.lblNominalIuran.AutoSize = true;
             this.lblNominalIuran.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblNominalIuran.Location = new System.Drawing.Point(25, 30);
+            this.lblNominalIuran.Location = new System.Drawing.Point(24, 24);
+            this.lblNominalIuran.Name = "lblNominalIuran";
+            this.lblNominalIuran.Size = new System.Drawing.Size(199, 15);
             this.lblNominalIuran.Text = "Nominal Iuran Wajib Bulanan (Rp)";
-            this.txtNominalIuran.Location = new System.Drawing.Point(28, 52);
-            this.txtNominalIuran.Size = new System.Drawing.Size(330, 25);
+
+            this.txtNominalIuran.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtNominalIuran.Location = new System.Drawing.Point(27, 46);
+            this.txtNominalIuran.Name = "txtNominalIuran";
+            this.txtNominalIuran.Size = new System.Drawing.Size(400, 25);
+            this.txtNominalIuran.TabIndex = 0;
 
             this.lblJatuhTempo.AutoSize = true;
             this.lblJatuhTempo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblJatuhTempo.Location = new System.Drawing.Point(390, 30);
+            this.lblJatuhTempo.Location = new System.Drawing.Point(464, 24);
+            this.lblJatuhTempo.Name = "lblJatuhTempo";
+            this.lblJatuhTempo.Size = new System.Drawing.Size(232, 15);
             this.lblJatuhTempo.Text = "Tanggal Jatuh Tempo Pembayaran (Tgl)";
-            this.nudJatuhTempo.Location = new System.Drawing.Point(393, 52);
-            this.nudJatuhTempo.Size = new System.Drawing.Size(150, 25);
-            this.nudJatuhTempo.Minimum = 1;
-            this.nudJatuhTempo.Maximum = 31;
-            this.nudJatuhTempo.Value = 10;
+
+            this.nudJatuhTempo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.nudJatuhTempo.Location = new System.Drawing.Point(467, 46);
+            this.nudJatuhTempo.Maximum = new decimal(new int[] { 31, 0, 0, 0 });
+            this.nudJatuhTempo.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudJatuhTempo.Name = "nudJatuhTempo";
+            this.nudJatuhTempo.Size = new System.Drawing.Size(180, 25);
+            this.nudJatuhTempo.TabIndex = 1;
+            this.nudJatuhTempo.Value = new decimal(new int[] { 10, 0, 0, 0 });
+
+            // pnlNoteIuran (Alert box)
+            this.pnlNoteIuran.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(253)))), ((int)(((byte)(244)))));
+            this.pnlNoteIuran.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlNoteIuran.Controls.Add(this.lblNoteIuran);
+            this.pnlNoteIuran.Location = new System.Drawing.Point(27, 95);
+            this.pnlNoteIuran.Name = "pnlNoteIuran";
+            this.pnlNoteIuran.Size = new System.Drawing.Size(840, 50);
+            this.pnlNoteIuran.TabIndex = 2;
 
             this.lblNoteIuran.AutoSize = true;
-            this.lblNoteIuran.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.lblNoteIuran.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
-            this.lblNoteIuran.Location = new System.Drawing.Point(25, 105);
-            this.lblNoteIuran.Text = "📌 Catatan: Nominal ini akan dijadikan nilai acuan saat warga melakukan pembayaran iuran bulanan.";
+            this.lblNoteIuran.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this.lblNoteIuran.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(101)))), ((int)(((byte)(52)))));
+            this.lblNoteIuran.Location = new System.Drawing.Point(12, 16);
+            this.lblNoteIuran.Name = "lblNoteIuran";
+            this.lblNoteIuran.Size = new System.Drawing.Size(564, 15);
+            this.lblNoteIuran.TabIndex = 0;
+            this.lblNoteIuran.Text = "💡 Informasional: Nominal iuran ini akan dijadikan acuan otomatis saat warga melakukan pembayaran bulanan.";
 
             this.btnSimpanIuran.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
             this.btnSimpanIuran.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -260,66 +359,157 @@ namespace RTRWMultimedia
             this.btnSimpanIuran.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimpanIuran.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSimpanIuran.ForeColor = System.Drawing.Color.White;
-            this.btnSimpanIuran.Location = new System.Drawing.Point(28, 160);
-            this.btnSimpanIuran.Size = new System.Drawing.Size(515, 42);
+            this.btnSimpanIuran.Location = new System.Drawing.Point(27, 165);
+            this.btnSimpanIuran.Name = "btnSimpanIuran";
+            this.btnSimpanIuran.Size = new System.Drawing.Size(620, 44);
+            this.btnSimpanIuran.TabIndex = 3;
             this.btnSimpanIuran.Text = "💾 SIMPAN PENGATURAN IURAN";
             this.btnSimpanIuran.UseVisualStyleBackColor = false;
             this.btnSimpanIuran.Click += new System.EventHandler(this.btnSimpanIuran_Click);
 
-            // ==================== TAB 3: MANAJEMEN USER ====================
+            // 
+            // tabUser
+            // 
             this.tabUser.BackColor = System.Drawing.Color.White;
-            this.tabUser.Controls.Add(this.dgvUser);
-            this.tabUser.Controls.Add(this.lblNewUser);
-            this.tabUser.Controls.Add(this.txtNewUser);
-            this.tabUser.Controls.Add(this.lblNewPass);
-            this.tabUser.Controls.Add(this.txtNewPass);
-            this.tabUser.Controls.Add(this.lblNewLevel);
-            this.tabUser.Controls.Add(this.cboNewLevel);
-            this.tabUser.Controls.Add(this.btnTambahUser);
-            this.tabUser.Controls.Add(this.btnHapusUser);
-            this.tabUser.Location = new System.Drawing.Point(4, 26);
+            this.tabUser.Controls.Add(this.pnlUserLeft);
+            this.tabUser.Controls.Add(this.pnlUserRight);
+            this.tabUser.Location = new System.Drawing.Point(4, 40);
             this.tabUser.Name = "tabUser";
-            this.tabUser.Padding = new System.Windows.Forms.Padding(15);
-            this.tabUser.Size = new System.Drawing.Size(772, 390);
+            this.tabUser.Padding = new System.Windows.Forms.Padding(16);
+            this.tabUser.Size = new System.Drawing.Size(896, 490);
             this.tabUser.TabIndex = 2;
-            this.tabUser.Text = " 👥 Manajemen Pengguna ";
+            this.tabUser.Text = "👥 Manajemen Pengguna";
 
-            // dgvUser
+            // pnlUserLeft (DataGridView List)
+            this.pnlUserLeft.Controls.Add(this.dgvUser);
+            this.pnlUserLeft.Controls.Add(this.lblUserListTitle);
+            this.pnlUserLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlUserLeft.Location = new System.Drawing.Point(16, 16);
+            this.pnlUserLeft.Name = "pnlUserLeft";
+            this.pnlUserLeft.Size = new System.Drawing.Size(480, 458);
+            this.pnlUserLeft.TabIndex = 0;
+
+            this.lblUserListTitle.AutoSize = true;
+            this.lblUserListTitle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblUserListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
+            this.lblUserListTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblUserListTitle.Name = "lblUserListTitle";
+            this.lblUserListTitle.Size = new System.Drawing.Size(176, 17);
+            this.lblUserListTitle.TabIndex = 0;
+            this.lblUserListTitle.Text = "📊 Daftar Akun Pengguna";
+
             this.dgvUser.AllowUserToAddRows = false;
             this.dgvUser.AllowUserToDeleteRows = false;
             this.dgvUser.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvUser.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
-            this.dgvUser.Location = new System.Drawing.Point(15, 15);
+            this.dgvUser.BackgroundColor = System.Drawing.Color.White;
+            this.dgvUser.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvUser.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvUser.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvUser.ColumnHeadersHeight = 34;
+
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(65)))), ((int)(((byte)(85)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(184)))), ((int)(((byte)(166)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvUser.DefaultCellStyle = dataGridViewCellStyle2;
+
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.dgvUser.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+
+            this.dgvUser.EnableHeadersVisualStyles = false;
+            this.dgvUser.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.dgvUser.Location = new System.Drawing.Point(0, 24);
             this.dgvUser.MultiSelect = false;
             this.dgvUser.Name = "dgvUser";
             this.dgvUser.ReadOnly = true;
+            this.dgvUser.RowHeadersVisible = false;
+            this.dgvUser.RowTemplate.Height = 32;
             this.dgvUser.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUser.Size = new System.Drawing.Size(430, 290);
-            this.dgvUser.TabIndex = 0;
+            this.dgvUser.Size = new System.Drawing.Size(470, 420);
+            this.dgvUser.TabIndex = 1;
 
-            // Form inputs on right side of Tab 3
+            // pnlUserRight (Add User Form)
+            this.pnlUserRight.Controls.Add(this.lblUserFormTitle);
+            this.pnlUserRight.Controls.Add(this.lblNewUser);
+            this.pnlUserRight.Controls.Add(this.txtNewUser);
+            this.pnlUserRight.Controls.Add(this.lblNewPass);
+            this.pnlUserRight.Controls.Add(this.txtNewPass);
+            this.pnlUserRight.Controls.Add(this.lblNewLevel);
+            this.pnlUserRight.Controls.Add(this.cboNewLevel);
+            this.pnlUserRight.Controls.Add(this.btnTambahUser);
+            this.pnlUserRight.Controls.Add(this.btnHapusUser);
+            this.pnlUserRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlUserRight.Location = new System.Drawing.Point(510, 16);
+            this.pnlUserRight.Name = "pnlUserRight";
+            this.pnlUserRight.Size = new System.Drawing.Size(370, 458);
+            this.pnlUserRight.TabIndex = 1;
+
+            this.lblUserFormTitle.AutoSize = true;
+            this.lblUserFormTitle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblUserFormTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
+            this.lblUserFormTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblUserFormTitle.Name = "lblUserFormTitle";
+            this.lblUserFormTitle.Size = new System.Drawing.Size(163, 17);
+            this.lblUserFormTitle.TabIndex = 0;
+            this.lblUserFormTitle.Text = "➕ Form Tambah User";
+
             this.lblNewUser.AutoSize = true;
-            this.lblNewUser.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblNewUser.Location = new System.Drawing.Point(460, 15);
+            this.lblNewUser.Font = new System.Drawing.Font("Segoe UI", 8.75F, System.Drawing.FontStyle.Bold);
+            this.lblNewUser.Location = new System.Drawing.Point(0, 30);
+            this.lblNewUser.Name = "lblNewUser";
+            this.lblNewUser.Size = new System.Drawing.Size(92, 15);
+            this.lblNewUser.TabIndex = 1;
             this.lblNewUser.Text = "Username Baru";
-            this.txtNewUser.Location = new System.Drawing.Point(463, 35);
-            this.txtNewUser.Size = new System.Drawing.Size(280, 25);
+
+            this.txtNewUser.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtNewUser.Location = new System.Drawing.Point(3, 48);
+            this.txtNewUser.Name = "txtNewUser";
+            this.txtNewUser.Size = new System.Drawing.Size(350, 24);
+            this.txtNewUser.TabIndex = 2;
 
             this.lblNewPass.AutoSize = true;
-            this.lblNewPass.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblNewPass.Location = new System.Drawing.Point(460, 75);
+            this.lblNewPass.Font = new System.Drawing.Font("Segoe UI", 8.75F, System.Drawing.FontStyle.Bold);
+            this.lblNewPass.Location = new System.Drawing.Point(0, 84);
+            this.lblNewPass.Name = "lblNewPass";
+            this.lblNewPass.Size = new System.Drawing.Size(59, 15);
+            this.lblNewPass.TabIndex = 3;
             this.lblNewPass.Text = "Password";
-            this.txtNewPass.Location = new System.Drawing.Point(463, 95);
-            this.txtNewPass.Size = new System.Drawing.Size(280, 25);
+
+            this.txtNewPass.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtNewPass.Location = new System.Drawing.Point(3, 102);
+            this.txtNewPass.Name = "txtNewPass";
+            this.txtNewPass.Size = new System.Drawing.Size(350, 24);
+            this.txtNewPass.TabIndex = 4;
 
             this.lblNewLevel.AutoSize = true;
-            this.lblNewLevel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblNewLevel.Location = new System.Drawing.Point(460, 135);
+            this.lblNewLevel.Font = new System.Drawing.Font("Segoe UI", 8.75F, System.Drawing.FontStyle.Bold);
+            this.lblNewLevel.Location = new System.Drawing.Point(0, 138);
+            this.lblNewLevel.Name = "lblNewLevel";
+            this.lblNewLevel.Size = new System.Drawing.Size(102, 15);
+            this.lblNewLevel.TabIndex = 5;
             this.lblNewLevel.Text = "Hak Akses / Role";
+
             this.cboNewLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboNewLevel.Items.AddRange(new object[] { "Administrator", "Operator", "Ketua RT" });
-            this.cboNewLevel.Location = new System.Drawing.Point(463, 155);
-            this.cboNewLevel.Size = new System.Drawing.Size(280, 25);
+            this.cboNewLevel.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.cboNewLevel.FormattingEnabled = true;
+            this.cboNewLevel.Items.AddRange(new object[] {
+            "Administrator",
+            "Operator",
+            "Ketua RT"});
+            this.cboNewLevel.Location = new System.Drawing.Point(3, 156);
+            this.cboNewLevel.Name = "cboNewLevel";
+            this.cboNewLevel.Size = new System.Drawing.Size(350, 24);
+            this.cboNewLevel.TabIndex = 6;
 
             this.btnTambahUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
             this.btnTambahUser.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -327,64 +517,95 @@ namespace RTRWMultimedia
             this.btnTambahUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTambahUser.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnTambahUser.ForeColor = System.Drawing.Color.White;
-            this.btnTambahUser.Location = new System.Drawing.Point(463, 205);
-            this.btnTambahUser.Size = new System.Drawing.Size(280, 40);
-            this.btnTambahUser.Text = "➕ TAMBAH USER";
+            this.btnTambahUser.Location = new System.Drawing.Point(3, 204);
+            this.btnTambahUser.Name = "btnTambahUser";
+            this.btnTambahUser.Size = new System.Drawing.Size(350, 42);
+            this.btnTambahUser.TabIndex = 7;
+            this.btnTambahUser.Text = "➕ TAMBAH PENGGUNA BARU";
             this.btnTambahUser.UseVisualStyleBackColor = false;
             this.btnTambahUser.Click += new System.EventHandler(this.btnTambahUser_Click);
 
-            this.btnHapusUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnHapusUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
             this.btnHapusUser.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHapusUser.FlatAppearance.BorderSize = 0;
             this.btnHapusUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHapusUser.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnHapusUser.ForeColor = System.Drawing.Color.White;
-            this.btnHapusUser.Location = new System.Drawing.Point(463, 255);
-            this.btnHapusUser.Size = new System.Drawing.Size(280, 40);
-            this.btnHapusUser.Text = "🗑️ HAPUS USER TERPILIH";
+            this.btnHapusUser.Location = new System.Drawing.Point(3, 258);
+            this.btnHapusUser.Name = "btnHapusUser";
+            this.btnHapusUser.Size = new System.Drawing.Size(350, 42);
+            this.btnHapusUser.TabIndex = 8;
+            this.btnHapusUser.Text = "🗑️ HAPUS AKUN TERPILIH";
             this.btnHapusUser.UseVisualStyleBackColor = false;
             this.btnHapusUser.Click += new System.EventHandler(this.btnHapusUser_Click);
 
-            // ==================== TAB 4: DATABASE & BACKUP ====================
+            // 
+            // tabDatabase
+            // 
             this.tabDatabase.BackColor = System.Drawing.Color.White;
-            this.tabDatabase.Controls.Add(this.lblDbInfo);
+            this.tabDatabase.Controls.Add(this.pnlDbStatus);
             this.tabDatabase.Controls.Add(this.lblDbServer);
             this.tabDatabase.Controls.Add(this.txtDbServer);
             this.tabDatabase.Controls.Add(this.lblDbName);
             this.tabDatabase.Controls.Add(this.txtDbName);
             this.tabDatabase.Controls.Add(this.btnTesKoneksi);
             this.tabDatabase.Controls.Add(this.btnBackupDB);
-            this.tabDatabase.Location = new System.Drawing.Point(4, 26);
+            this.tabDatabase.Location = new System.Drawing.Point(4, 40);
             this.tabDatabase.Name = "tabDatabase";
-            this.tabDatabase.Padding = new System.Windows.Forms.Padding(20);
-            this.tabDatabase.Size = new System.Drawing.Size(772, 390);
+            this.tabDatabase.Padding = new System.Windows.Forms.Padding(24);
+            this.tabDatabase.Size = new System.Drawing.Size(896, 490);
             this.tabDatabase.TabIndex = 3;
-            this.tabDatabase.Text = " 💾 Database & Backup ";
+            this.tabDatabase.Text = "💾 Database & Backup";
 
-            // Controls for Tab 4
+            // pnlDbStatus
+            this.pnlDbStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(253)))), ((int)(((byte)(244)))));
+            this.pnlDbStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDbStatus.Controls.Add(this.lblDbInfo);
+            this.pnlDbStatus.Location = new System.Drawing.Point(24, 20);
+            this.pnlDbStatus.Name = "pnlDbStatus";
+            this.pnlDbStatus.Size = new System.Drawing.Size(840, 46);
+            this.pnlDbStatus.TabIndex = 0;
+
             this.lblDbInfo.AutoSize = true;
             this.lblDbInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblDbInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(118)))), ((int)(((byte)(110)))));
-            this.lblDbInfo.Location = new System.Drawing.Point(25, 20);
-            this.lblDbInfo.Text = "Status Koneksi SQL Server: TERHUBUNG (DB_RTRW)";
+            this.lblDbInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(101)))), ((int)(((byte)(52)))));
+            this.lblDbInfo.Location = new System.Drawing.Point(12, 13);
+            this.lblDbInfo.Name = "lblDbInfo";
+            this.lblDbInfo.Size = new System.Drawing.Size(395, 17);
+            this.lblDbInfo.TabIndex = 0;
+            this.lblDbInfo.Text = "⚡ Status Database: BERHASIL TERHUBUNG (SQL Server Express)";
 
             this.lblDbServer.AutoSize = true;
             this.lblDbServer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblDbServer.Location = new System.Drawing.Point(25, 60);
+            this.lblDbServer.Location = new System.Drawing.Point(24, 85);
+            this.lblDbServer.Name = "lblDbServer";
+            this.lblDbServer.Size = new System.Drawing.Size(147, 15);
+            this.lblDbServer.TabIndex = 1;
             this.lblDbServer.Text = "Data Source / Server SQL";
-            this.txtDbServer.Location = new System.Drawing.Point(28, 80);
-            this.txtDbServer.Size = new System.Drawing.Size(330, 25);
-            this.txtDbServer.Text = ".\\SQLEXPRESS";
+
+            this.txtDbServer.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtDbServer.Location = new System.Drawing.Point(27, 105);
+            this.txtDbServer.Name = "txtDbServer";
             this.txtDbServer.ReadOnly = true;
+            this.txtDbServer.Size = new System.Drawing.Size(400, 25);
+            this.txtDbServer.TabIndex = 2;
+            this.txtDbServer.Text = ".\\SQLEXPRESS";
 
             this.lblDbName.AutoSize = true;
             this.lblDbName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblDbName.Location = new System.Drawing.Point(390, 60);
+            this.lblDbName.Location = new System.Drawing.Point(464, 85);
+            this.lblDbName.Name = "lblDbName";
+            this.lblDbName.Size = new System.Drawing.Size(95, 15);
+            this.lblDbName.TabIndex = 3;
             this.lblDbName.Text = "Database Name";
-            this.txtDbName.Location = new System.Drawing.Point(393, 80);
-            this.txtDbName.Size = new System.Drawing.Size(330, 25);
-            this.txtDbName.Text = "DB_RTRW";
+
+            this.txtDbName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtDbName.Location = new System.Drawing.Point(467, 105);
+            this.txtDbName.Name = "txtDbName";
             this.txtDbName.ReadOnly = true;
+            this.txtDbName.Size = new System.Drawing.Size(400, 25);
+            this.txtDbName.TabIndex = 4;
+            this.txtDbName.Text = "DB_RTRW";
 
             this.btnTesKoneksi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
             this.btnTesKoneksi.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -392,8 +613,10 @@ namespace RTRWMultimedia
             this.btnTesKoneksi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTesKoneksi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnTesKoneksi.ForeColor = System.Drawing.Color.White;
-            this.btnTesKoneksi.Location = new System.Drawing.Point(28, 140);
-            this.btnTesKoneksi.Size = new System.Drawing.Size(330, 42);
+            this.btnTesKoneksi.Location = new System.Drawing.Point(27, 155);
+            this.btnTesKoneksi.Name = "btnTesKoneksi";
+            this.btnTesKoneksi.Size = new System.Drawing.Size(400, 44);
+            this.btnTesKoneksi.TabIndex = 5;
             this.btnTesKoneksi.Text = "⚡ UJI KONEKSI DATABASE";
             this.btnTesKoneksi.UseVisualStyleBackColor = false;
             this.btnTesKoneksi.Click += new System.EventHandler(this.btnTesKoneksi_Click);
@@ -404,76 +627,62 @@ namespace RTRWMultimedia
             this.btnBackupDB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBackupDB.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnBackupDB.ForeColor = System.Drawing.Color.White;
-            this.btnBackupDB.Location = new System.Drawing.Point(393, 140);
-            this.btnBackupDB.Size = new System.Drawing.Size(330, 42);
-            this.btnBackupDB.Text = "💾 BACKUP DATABASE SEKARANG";
+            this.btnBackupDB.Location = new System.Drawing.Point(467, 155);
+            this.btnBackupDB.Name = "btnBackupDB";
+            this.btnBackupDB.Size = new System.Drawing.Size(400, 44);
+            this.btnBackupDB.TabIndex = 6;
+            this.btnBackupDB.Text = "💾 BACKUP DATABASE SEKARANG (.BAK)";
             this.btnBackupDB.UseVisualStyleBackColor = false;
             this.btnBackupDB.Click += new System.EventHandler(this.btnBackupDB_Click);
-
-            // pnlFooter
-            this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
-            this.pnlFooter.Controls.Add(this.btnTutup);
-            this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(0, 500);
-            this.pnlFooter.Name = "pnlFooter";
-            this.pnlFooter.Size = new System.Drawing.Size(780, 60);
-            this.pnlFooter.TabIndex = 2;
-
-            // btnTutup
-            this.btnTutup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
-            this.btnTutup.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTutup.FlatAppearance.BorderSize = 0;
-            this.btnTutup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTutup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnTutup.ForeColor = System.Drawing.Color.White;
-            this.btnTutup.Location = new System.Drawing.Point(630, 10);
-            this.btnTutup.Name = "btnTutup";
-            this.btnTutup.Size = new System.Drawing.Size(130, 40);
-            this.btnTutup.TabIndex = 0;
-            this.btnTutup.Text = "✖ TUTUP";
-            this.btnTutup.UseVisualStyleBackColor = false;
-            this.btnTutup.Click += new System.EventHandler(this.btnTutup_Click);
 
             // 
             // frmPengaturan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(780, 560);
-            this.Controls.Add(this.tabSettings);
-            this.Controls.Add(this.pnlFooter);
-            this.Controls.Add(this.pnlHeader);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
+            this.ClientSize = new System.Drawing.Size(960, 650);
+            this.Controls.Add(this.pnlMain);
+            this.Controls.Add(this.pnlTopHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmPengaturan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Pengaturan Sistem RT/RW";
+            this.Text = "Pengaturan Sistem";
             this.Load += new System.EventHandler(this.frmPengaturan_Load);
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
+            this.pnlTopHeader.ResumeLayout(false);
+            this.pnlTopHeader.PerformLayout();
+            this.pnlMain.ResumeLayout(false);
+            this.pnlSettingsCard.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabProfil.ResumeLayout(false);
             this.tabProfil.PerformLayout();
             this.tabIuran.ResumeLayout(false);
             this.tabIuran.PerformLayout();
+            this.pnlNoteIuran.ResumeLayout(false);
+            this.pnlNoteIuran.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudJatuhTempo)).EndInit();
             this.tabUser.ResumeLayout(false);
-            this.tabUser.PerformLayout();
+            this.pnlUserRight.ResumeLayout(false);
+            this.pnlUserRight.PerformLayout();
+            this.pnlUserLeft.ResumeLayout(false);
+            this.pnlUserLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).EndInit();
             this.tabDatabase.ResumeLayout(false);
             this.tabDatabase.PerformLayout();
-            this.pnlFooter.ResumeLayout(false);
+            this.pnlDbStatus.ResumeLayout(false);
+            this.pnlDbStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblSubtitle;
+        private System.Windows.Forms.Panel pnlTopHeader;
+        private System.Windows.Forms.Label lblHeaderTitle;
+        private System.Windows.Forms.Label lblHeaderSub;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.Panel pnlSettingsCard;
         private System.Windows.Forms.TabControl tabSettings;
 
         private System.Windows.Forms.TabPage tabProfil;
@@ -496,11 +705,16 @@ namespace RTRWMultimedia
         private System.Windows.Forms.TextBox txtNominalIuran;
         private System.Windows.Forms.Label lblJatuhTempo;
         private System.Windows.Forms.NumericUpDown nudJatuhTempo;
+        private System.Windows.Forms.Panel pnlNoteIuran;
         private System.Windows.Forms.Label lblNoteIuran;
         private System.Windows.Forms.Button btnSimpanIuran;
 
         private System.Windows.Forms.TabPage tabUser;
+        private System.Windows.Forms.Panel pnlUserLeft;
+        private System.Windows.Forms.Label lblUserListTitle;
         private System.Windows.Forms.DataGridView dgvUser;
+        private System.Windows.Forms.Panel pnlUserRight;
+        private System.Windows.Forms.Label lblUserFormTitle;
         private System.Windows.Forms.Label lblNewUser;
         private System.Windows.Forms.TextBox txtNewUser;
         private System.Windows.Forms.Label lblNewPass;
@@ -511,6 +725,7 @@ namespace RTRWMultimedia
         private System.Windows.Forms.Button btnHapusUser;
 
         private System.Windows.Forms.TabPage tabDatabase;
+        private System.Windows.Forms.Panel pnlDbStatus;
         private System.Windows.Forms.Label lblDbInfo;
         private System.Windows.Forms.Label lblDbServer;
         private System.Windows.Forms.TextBox txtDbServer;
@@ -518,8 +733,5 @@ namespace RTRWMultimedia
         private System.Windows.Forms.TextBox txtDbName;
         private System.Windows.Forms.Button btnTesKoneksi;
         private System.Windows.Forms.Button btnBackupDB;
-
-        private System.Windows.Forms.Panel pnlFooter;
-        private System.Windows.Forms.Button btnTutup;
     }
 }
