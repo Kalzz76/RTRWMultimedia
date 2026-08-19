@@ -32,11 +32,6 @@ namespace RTRWMultimedia
                 {
                     picLogo.Image = Image.FromFile(pathRt);
                 }
-
-                if (File.Exists(pathSekolah))
-                {
-                    picLogoSekolah.Image = Image.FromFile(pathSekolah);
-                }
             }
             catch (Exception ex)
             {
@@ -56,6 +51,24 @@ namespace RTRWMultimedia
 
             var culture = new System.Globalization.CultureInfo("id-ID");
             lblTanggal.Text = "- " + now.ToString("dddd, d MMMM yyyy", culture);
+        }
+
+        private void txtUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Hilangkan suara beep sistem Windows
+                txtPassword.Focus();
+            }
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Hilangkan suara beep sistem Windows
+                btnLogin.PerformClick();
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -109,7 +122,7 @@ namespace RTRWMultimedia
                 {
                     MessageBox.Show("Login Berhasil! Selamat Datang (" + levelUser + ")", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    frmDashboard f = new frmDashboard();
+                    frmDashboard f = new frmDashboard(txtUsername.Text.Trim(), levelUser);
                     f.Show();
 
                     this.Hide();

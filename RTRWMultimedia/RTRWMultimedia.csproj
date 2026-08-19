@@ -80,6 +80,42 @@
     <Compile Include="frmWarga.Designer.cs">
       <DependentUpon>frmWarga.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmIuran.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIuran.Designer.cs">
+      <DependentUpon>frmIuran.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPengumuman.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPengumuman.Designer.cs">
+      <DependentUpon>frmPengumuman.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSurat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSurat.Designer.cs">
+      <DependentUpon>frmSurat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPreviewSurat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPreviewSurat.Designer.cs">
+      <DependentUpon>frmPreviewSurat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLaporan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLaporan.Designer.cs">
+      <DependentUpon>frmLaporan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGaleri.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGaleri.Designer.cs">
+      <DependentUpon>frmGaleri.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmDashboard.resx">
@@ -97,6 +133,24 @@
     <EmbeddedResource Include="frmWarga.resx">
       <DependentUpon>frmWarga.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmIuran.resx">
+      <DependentUpon>frmIuran.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPengumuman.resx">
+      <DependentUpon>frmPengumuman.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSurat.resx">
+      <DependentUpon>frmSurat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPreviewSurat.resx">
+      <DependentUpon>frmPreviewSurat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLaporan.resx">
+      <DependentUpon>frmLaporan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGaleri.resx">
+      <DependentUpon>frmGaleri.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -105,6 +159,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -118,6 +173,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_rt&amp;rw.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
