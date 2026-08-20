@@ -94,7 +94,6 @@ namespace RTRWMultimedia.Database
                             id_user INT IDENTITY(1,1) PRIMARY KEY,
                             username VARCHAR(50) NOT NULL UNIQUE,
                             password VARCHAR(100) NOT NULL,
-                            nama_lengkap VARCHAR(100) NOT NULL,
                             level_user VARCHAR(30) NOT NULL DEFAULT 'Administrator'
                         );
                     END;
@@ -190,11 +189,17 @@ namespace RTRWMultimedia.Database
                         );
                     END;
 
+                    -- Hapus kolom nama_lengkap dari tb_user jika ada (kompatibilitas)
+                    IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('tb_user') AND name = 'nama_lengkap')
+                    BEGIN
+                        ALTER TABLE tb_user DROP COLUMN nama_lengkap;
+                    END;
+
                     -- Insert default admin jika belum ada
                     IF NOT EXISTS (SELECT 1 FROM tb_user WHERE username = 'admin')
                     BEGIN
-                        INSERT INTO tb_user (username, password, nama_lengkap, level_user)
-                        VALUES ('admin', 'admin', 'Administrator Sistem', 'Administrator');
+                        INSERT INTO tb_user (username, password, level_user)
+                        VALUES ('admin', 'admin', 'Administrator');
                     END;
 
                     -- Insert default pengaturan jika belum ada

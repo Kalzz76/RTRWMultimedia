@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -208,6 +208,20 @@ namespace RTRWMultimedia
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
                 string rtPath = Path.Combine(baseDir, "logo_rt.png");
+                if (!File.Exists(rtPath))
+                {
+                    try
+                    {
+                        var parentNode = Directory.GetParent(baseDir);
+                        if (parentNode != null && parentNode.Parent != null)
+                        {
+                            string vsPath = Path.Combine(parentNode.Parent.FullName, "logo_rt.png");
+                            if (File.Exists(vsPath)) rtPath = vsPath;
+                        }
+                    }
+                    catch { }
+                }
+
                 if (File.Exists(rtPath))
                 {
                     using (FileStream fs = new FileStream(rtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -218,6 +232,20 @@ namespace RTRWMultimedia
                 }
 
                 string kbPath = Path.Combine(baseDir, "kerjabakti.jpg");
+                if (!File.Exists(kbPath))
+                {
+                    try
+                    {
+                        var parentNode = Directory.GetParent(baseDir);
+                        if (parentNode != null && parentNode.Parent != null)
+                        {
+                            string vsPath = Path.Combine(parentNode.Parent.FullName, "kerjabakti.jpg");
+                            if (File.Exists(vsPath)) kbPath = vsPath;
+                        }
+                    }
+                    catch { }
+                }
+
                 if (File.Exists(kbPath))
                 {
                     using (FileStream fs = new FileStream(kbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

@@ -34,6 +34,20 @@ namespace RTRWMultimedia
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string pathRt = Path.Combine(baseDir, "logo_rt.png");
 
+                if (!File.Exists(pathRt))
+                {
+                    try
+                    {
+                        var parentNode = Directory.GetParent(baseDir);
+                        if (parentNode != null && parentNode.Parent != null)
+                        {
+                            string vsPath = Path.Combine(parentNode.Parent.FullName, "logo_rt.png");
+                            if (File.Exists(vsPath)) pathRt = vsPath;
+                        }
+                    }
+                    catch { }
+                }
+
                 if (File.Exists(pathRt))
                 {
                     using (FileStream fs = new FileStream(pathRt, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

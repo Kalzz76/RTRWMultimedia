@@ -66,7 +66,7 @@ namespace RTRWMultimedia
             // 
             // picLogo
             // 
-            this.picLogo.Image = global::RTRWMultimedia.Properties.Resources.logo_rt_rw;
+            this.picLogo.Image = null;
             this.picLogo.Location = new System.Drawing.Point(15, 20);
             this.picLogo.Name = "picLogo";
             this.picLogo.Size = new System.Drawing.Size(60, 60);
