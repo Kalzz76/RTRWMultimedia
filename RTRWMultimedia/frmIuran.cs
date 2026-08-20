@@ -33,6 +33,31 @@ namespace RTRWMultimedia
             Bersih();
         }
 
+        private int GetNominalIuranDefault()
+        {
+            try
+            {
+                using (SqlConnection c = Koneksi.GetConnection())
+                {
+                    c.Open();
+                    string sql = "SELECT TOP 1 nominal_iuran FROM tb_pengaturan";
+                    using (SqlCommand cmdGet = new SqlCommand(sql, c))
+                    {
+                        object obj = cmdGet.ExecuteScalar();
+                        if (obj != null && obj != DBNull.Value)
+                        {
+                            return Convert.ToInt32(obj);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Note getting nominal default: " + ex.Message);
+            }
+            return 25000;
+        }
+
         private void SyncSemuaWargaKeIuran()
         {
             try
@@ -41,11 +66,12 @@ namespace RTRWMultimedia
                 {
                     c.Open();
                     string selectedBulan = cboBulan.SelectedItem != null ? cboBulan.SelectedItem.ToString() : "Agustus";
+                    int defaultNominal = GetNominalIuranDefault();
 
                     // Auto-insert entries for all citizens in tb_warga who don't have an iuran record for this month yet
                     string sql = @"
                         INSERT INTO tb_iuran (nama_warga, bulan, nominal, tanggal_bayar, status_bayar)
-                        SELECT w.nama, @bulan, 50000, GETDATE(), 'Belum Bayar'
+                        SELECT w.nama, @bulan, @nominal, GETDATE(), 'Belum Bayar'
                         FROM tb_warga w
                         WHERE ISNULL(w.nama, '') <> '' 
                           AND NOT EXISTS (
@@ -57,6 +83,7 @@ namespace RTRWMultimedia
                     using (SqlCommand cmdSync = new SqlCommand(sql, c))
                     {
                         cmdSync.Parameters.AddWithValue("@bulan", selectedBulan);
+                        cmdSync.Parameters.AddWithValue("@nominal", defaultNominal);
                         cmdSync.ExecuteNonQuery();
                     }
                 }
@@ -205,13 +232,11 @@ namespace RTRWMultimedia
             {
                 Console.WriteLine("Note updating total kas: " + ex.Message);
             }
-        }
-
-        private void Bersih()
+        }        private void Bersih()
         {
             cboNamaWarga.Text = "";
             SetCurrentMonthDefault();
-            txtNominal.Text = "50000";
+            txtNominal.Text = GetNominalIuranDefault().ToString();
             dtpTanggalBayar.Value = DateTime.Now;
             if (cboStatusBayar.Items.Count > 0) cboStatusBayar.SelectedIndex = 0;
             idIuran = 0;
@@ -261,7 +286,7 @@ namespace RTRWMultimedia
             {
                 return nominalVal;
             }
-            return 50000;
+            return GetNominalIuranDefault();
         }
 
         private void btnSimpan_Click(object sender, EventArgs e)

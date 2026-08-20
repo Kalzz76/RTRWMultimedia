@@ -625,7 +625,7 @@ Console.WriteLine("Chart error: " + ex.Message);
                 using (SqlConnection conn = Koneksi.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT TOP 10 nama_warga, bulan, nominal, tanggal_bayar, status_bayar FROM tb_iuran ORDER BY id_iuran DESC";
+                    string sql = "SELECT TOP 10 nama_warga, bulan, nominal, tanggal_bayar, status_bayar FROM tb_iuran WHERE status_bayar = 'Lunas' ORDER BY id_iuran DESC";
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         using (SqlDataReader rd = cmd.ExecuteReader())
