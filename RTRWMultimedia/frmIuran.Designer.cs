@@ -40,6 +40,8 @@ namespace RTRWMultimedia
             this.pnlSearchHeader = new System.Windows.Forms.Panel();
             this.lblTableTitle = new System.Windows.Forms.Label();
             this.lblTotalKas = new System.Windows.Forms.Label();
+            this.lblFilterBulan = new System.Windows.Forms.Label();
+            this.cboFilterBulan = new System.Windows.Forms.ComboBox();
             this.lblFilterStatus = new System.Windows.Forms.Label();
             this.cboFilterStatus = new System.Windows.Forms.ComboBox();
             this.lblCari = new System.Windows.Forms.Label();
@@ -174,6 +176,8 @@ namespace RTRWMultimedia
             // 
             this.pnlSearchHeader.Controls.Add(this.lblTableTitle);
             this.pnlSearchHeader.Controls.Add(this.lblTotalKas);
+            this.pnlSearchHeader.Controls.Add(this.lblFilterBulan);
+            this.pnlSearchHeader.Controls.Add(this.cboFilterBulan);
             this.pnlSearchHeader.Controls.Add(this.lblFilterStatus);
             this.pnlSearchHeader.Controls.Add(this.cboFilterStatus);
             this.pnlSearchHeader.Controls.Add(this.lblCari);
@@ -209,12 +213,49 @@ namespace RTRWMultimedia
             this.lblTotalKas.TabIndex = 1;
             this.lblTotalKas.Text = "💰 Kas Lunas: Rp 0";
             // 
+            // lblFilterBulan
+            // 
+            this.lblFilterBulan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFilterBulan.AutoSize = true;
+            this.lblFilterBulan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblFilterBulan.Location = new System.Drawing.Point(365, 12);
+            this.lblFilterBulan.Name = "lblFilterBulan";
+            this.lblFilterBulan.Size = new System.Drawing.Size(41, 15);
+            this.lblFilterBulan.TabIndex = 6;
+            this.lblFilterBulan.Text = "Bulan:";
+            // 
+            // cboFilterBulan
+            // 
+            this.cboFilterBulan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboFilterBulan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboFilterBulan.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.cboFilterBulan.FormattingEnabled = true;
+            this.cboFilterBulan.Items.AddRange(new object[] {
+            "Semua Bulan",
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"});
+            this.cboFilterBulan.Location = new System.Drawing.Point(408, 8);
+            this.cboFilterBulan.Name = "cboFilterBulan";
+            this.cboFilterBulan.Size = new System.Drawing.Size(105, 24);
+            this.cboFilterBulan.TabIndex = 7;
+            this.cboFilterBulan.SelectedIndexChanged += new System.EventHandler(this.Filter_Changed);
+            // 
             // lblFilterStatus
             // 
             this.lblFilterStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFilterStatus.AutoSize = true;
             this.lblFilterStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblFilterStatus.Location = new System.Drawing.Point(500, 12);
+            this.lblFilterStatus.Location = new System.Drawing.Point(522, 12);
             this.lblFilterStatus.Name = "lblFilterStatus";
             this.lblFilterStatus.Size = new System.Drawing.Size(46, 15);
             this.lblFilterStatus.TabIndex = 2;
@@ -230,9 +271,9 @@ namespace RTRWMultimedia
             "Semua Status",
             "Lunas",
             "Belum Lunas"});
-            this.cboFilterStatus.Location = new System.Drawing.Point(550, 8);
+            this.cboFilterStatus.Location = new System.Drawing.Point(570, 8);
             this.cboFilterStatus.Name = "cboFilterStatus";
-            this.cboFilterStatus.Size = new System.Drawing.Size(115, 24);
+            this.cboFilterStatus.Size = new System.Drawing.Size(110, 24);
             this.cboFilterStatus.TabIndex = 3;
             this.cboFilterStatus.SelectedIndexChanged += new System.EventHandler(this.Filter_Changed);
             // 
@@ -241,7 +282,7 @@ namespace RTRWMultimedia
             this.lblCari.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCari.AutoSize = true;
             this.lblCari.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblCari.Location = new System.Drawing.Point(678, 12);
+            this.lblCari.Location = new System.Drawing.Point(688, 12);
             this.lblCari.Name = "lblCari";
             this.lblCari.Size = new System.Drawing.Size(39, 15);
             this.lblCari.TabIndex = 4;
@@ -251,9 +292,9 @@ namespace RTRWMultimedia
             // 
             this.txtCari.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCari.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.txtCari.Location = new System.Drawing.Point(722, 8);
+            this.txtCari.Location = new System.Drawing.Point(728, 8);
             this.txtCari.Name = "txtCari";
-            this.txtCari.Size = new System.Drawing.Size(180, 24);
+            this.txtCari.Size = new System.Drawing.Size(165, 24);
             this.txtCari.TabIndex = 5;
             this.txtCari.TextChanged += new System.EventHandler(this.Filter_Changed);
             // 
@@ -539,6 +580,8 @@ namespace RTRWMultimedia
         private System.Windows.Forms.Panel pnlSearchHeader;
         private System.Windows.Forms.Label lblTableTitle;
         private System.Windows.Forms.Label lblTotalKas;
+        private System.Windows.Forms.Label lblFilterBulan;
+        private System.Windows.Forms.ComboBox cboFilterBulan;
         private System.Windows.Forms.Label lblFilterStatus;
         private System.Windows.Forms.ComboBox cboFilterStatus;
         private System.Windows.Forms.Label lblCari;

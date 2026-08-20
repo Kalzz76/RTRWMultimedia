@@ -388,15 +388,17 @@ namespace RTRWMultimedia
             // === TOTAL KAS ===
             try
             {
+                string bulanIni = DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("id-ID"));
                 using (SqlConnection conn = Koneksi.GetConnection())
                 {
                     conn.Open();
-                    // Coba SUM dengan CAST BIGINT
+                    // Coba SUM dengan CAST BIGINT untuk bulan aktif
                     try
                     {
-                        string sql = "SELECT ISNULL(SUM(CAST(nominal AS BIGINT)), 0) FROM tb_iuran WHERE status_bayar='Lunas'";
+                        string sql = "SELECT ISNULL(SUM(CAST(nominal AS BIGINT)), 0) FROM tb_iuran WHERE status_bayar='Lunas' AND bulan = @bulan";
                         using (SqlCommand cmd = new SqlCommand(sql, conn))
                         {
+                            cmd.Parameters.AddWithValue("@bulan", bulanIni);
                             long totalKas = Convert.ToInt64(cmd.ExecuteScalar());
                             lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
                         }
@@ -404,9 +406,10 @@ namespace RTRWMultimedia
                     catch
                     {
                         // Fallback dengan DECIMAL
-                        string sql = "SELECT ISNULL(SUM(nominal), 0) FROM tb_iuran WHERE status_bayar='Lunas'";
+                        string sql = "SELECT ISNULL(SUM(nominal), 0) FROM tb_iuran WHERE status_bayar='Lunas' AND bulan = @bulan";
                         using (SqlCommand cmd = new SqlCommand(sql, conn))
                         {
+                            cmd.Parameters.AddWithValue("@bulan", bulanIni);
                             decimal totalKas = Convert.ToDecimal(cmd.ExecuteScalar());
                             lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
                         }

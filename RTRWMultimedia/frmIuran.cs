@@ -25,6 +25,7 @@ namespace RTRWMultimedia
         {
             SetCurrentMonthDefault();
             if (cboStatusBayar.Items.Count > 0) cboStatusBayar.SelectedIndex = 0; // Default "Lunas"
+            if (cboFilterBulan != null && cboFilterBulan.Items.Count > 0) cboFilterBulan.SelectedIndex = 0; // Default "Semua Bulan"
             if (cboFilterStatus.Items.Count > 0) cboFilterStatus.SelectedIndex = 0; // Default "Semua Status"
 
             LoadWargaCombo();
@@ -440,7 +441,13 @@ namespace RTRWMultimedia
                 conn = Koneksi.GetConnection();
                 string sql = "SELECT id_iuran, nama_warga, bulan, nominal, tanggal_bayar, status_bayar FROM tb_iuran WHERE 1=1";
 
-                string filterStatus = cboFilterStatus.SelectedItem != null ? cboFilterStatus.SelectedItem.ToString() : "Semua Status";
+                string filterBulan = cboFilterBulan != null && cboFilterBulan.SelectedItem != null ? cboFilterBulan.SelectedItem.ToString() : "Semua Bulan";
+                if (filterBulan != "Semua Bulan")
+                {
+                    sql += " AND bulan = @bulanFilter";
+                }
+
+                string filterStatus = cboFilterStatus != null && cboFilterStatus.SelectedItem != null ? cboFilterStatus.SelectedItem.ToString() : "Semua Status";
                 if (filterStatus != "Semua Status")
                 {
                     sql += " AND status_bayar = @statusFilter";
@@ -454,6 +461,11 @@ namespace RTRWMultimedia
                 sql += " ORDER BY id_iuran DESC";
 
                 da = new SqlDataAdapter(sql, conn);
+
+                if (filterBulan != "Semua Bulan")
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@bulanFilter", filterBulan);
+                }
 
                 if (filterStatus != "Semua Status")
                 {

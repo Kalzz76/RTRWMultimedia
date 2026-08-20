@@ -1,0 +1,13 @@
+﻿  Determining projects to restore...
+  Nothing to do. None of the projects specified contain packages to restore.
+E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.cs(400,67): error CS0103: The name 'bulanAktif' does not exist in the current context [E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.cs(411,67): error CS0103: The name 'bulanAktif' does not exist in the current context [E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+
+Build FAILED.
+
+E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.cs(400,67): error CS0103: The name 'bulanAktif' does not exist in the current context [E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\frmDashboard.cs(411,67): error CS0103: The name 'bulanAktif' does not exist in the current context [E:\ProjectRPL\RTRWMultimedia\RTRWMultimedia\RTRWMultimedia.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:00.75
