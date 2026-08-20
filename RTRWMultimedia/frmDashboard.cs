@@ -37,6 +37,9 @@ namespace RTRWMultimedia
             // 2. Load Assets Gambar
             LoadImageAssets();
 
+            // 2.5. Load Identitas RT/RW dari Pengaturan Wilayah
+            LoadSettingsHeaders();
+
             // 3. ToolTip pada Profile Avatar
             ToolTip tt = new ToolTip();
             tt.SetToolTip(picLogoSekolah, "Klik untuk membuka Profil Pengguna: " + currentUsername + " (" + currentLevelUser + ")");
@@ -206,57 +209,147 @@ namespace RTRWMultimedia
             }
         }
 
-        private void PopulateStatCardsFromDB()
+        public void LoadSettingsHeaders()
         {
             try
             {
                 using (SqlConnection conn = Koneksi.GetConnection())
                 {
                     conn.Open();
-
-                    // Total Warga
-                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga", conn))
+                    string sql = "SELECT TOP 1 nama_rt_rw, desa_kelurahan FROM tb_pengaturan";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
-                        int totalWarga = Convert.ToInt32(cmd.ExecuteScalar());
-                        lblTotalWarga.Text = totalWarga.ToString();
-                    }
-
-                    // Aktif Bayar (Distinct warga that paid)
-                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(DISTINCT nama_warga) FROM tb_iuran WHERE status_bayar='Lunas'", conn))
-                    {
-                        int aktifBayar = Convert.ToInt32(cmd.ExecuteScalar());
-                        lblAktifBayarVal.Text = aktifBayar.ToString();
-                    }
-
-                    // Belum Bayar
-                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga WHERE status_warga != 'Aktif'", conn))
-                    {
-                        int belumBayar = Convert.ToInt32(cmd.ExecuteScalar());
-                        if (belumBayar == 0)
+                        using (SqlDataReader rd = cmd.ExecuteReader())
                         {
-                            int total = Convert.ToInt32(lblTotalWarga.Text);
-                            int paid = Convert.ToInt32(lblAktifBayarVal.Text);
-                            lblBelumBayarVal.Text = Math.Max(0, total - paid).ToString();
-                        }
-                        else
-                        {
-                            lblBelumBayarVal.Text = belumBayar.ToString();
-                        }
-                    }
+                            if (rd.Read())
+                            {
+                                string rtRw = rd["nama_rt_rw"].ToString();
+                                string desa = rd["desa_kelurahan"].ToString();
 
-                    // Total Kas
-                    using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(SUM(CAST(nominal AS BIGINT)), 0) FROM tb_iuran WHERE status_bayar='Lunas'", conn))
-                    {
-                        long totalKas = Convert.ToInt64(cmd.ExecuteScalar());
-                        lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
+                                lblRTRW.Text = rtRw;
+                                lblSubRTRW.Text = "DESA " + desa.ToUpper();
+                                lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga " + rtRw;
+                            }
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Note loading stats: " + ex.Message);
+                Console.WriteLine("Error loading settings headers: " + ex.Message);
             }
         }
+
+        private void PopulateStatCardsFromDB()
+        {
+            // === TOTAL WARGA ===
+            int totalWarga = 0;
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    // Coba query dengan status_warga dulu
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga WHERE status_warga = 'Aktif'", conn))
+                            totalWarga = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    catch
+                    {
+                        // Jika kolom status_warga tidak ada, hitung semua warga
+                        using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tb_warga", conn))
+                            totalWarga = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+                lblTotalWarga.Text = totalWarga.ToString();
+            }
+            catch (Exception ex)
+            {
+                lblTotalWarga.Text = "0";
+                Console.WriteLine("Stats - Total Warga error: " + ex.Message);
+            }
+
+            // === AKTIF BAYAR (sudah bayar iuran bulan ini) ===
+            int aktifBayar = 0;
+            try
+            {
+                string bulanIni = DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("id-ID"));
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    // Coba dengan filter bulan
+                    try
+                    {
+                        string sql = "SELECT COUNT(DISTINCT nama_warga) FROM tb_iuran WHERE status_bayar = 'Lunas' AND bulan = @bulan";
+                        using (SqlCommand cmd = new SqlCommand(sql, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@bulan", bulanIni);
+                            aktifBayar = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+                    }
+                    catch
+                    {
+                        // Fallback: hitung semua yang Lunas tanpa filter bulan
+                        string sql = "SELECT COUNT(DISTINCT nama_warga) FROM tb_iuran WHERE status_bayar = 'Lunas'";
+                        using (SqlCommand cmd = new SqlCommand(sql, conn))
+                            aktifBayar = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+                lblAktifBayarVal.Text = aktifBayar.ToString();
+            }
+            catch (Exception ex)
+            {
+                lblAktifBayarVal.Text = "0";
+                Console.WriteLine("Stats - Aktif Bayar error: " + ex.Message);
+            }
+
+            // === BELUM BAYAR ===
+            try
+            {
+                int belumBayar = Math.Max(0, totalWarga - aktifBayar);
+                lblBelumBayarVal.Text = belumBayar.ToString();
+            }
+            catch
+            {
+                lblBelumBayarVal.Text = "0";
+            }
+
+            // === TOTAL KAS ===
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    // Coba SUM dengan CAST BIGINT
+                    try
+                    {
+                        string sql = "SELECT ISNULL(SUM(CAST(nominal AS BIGINT)), 0) FROM tb_iuran WHERE status_bayar='Lunas'";
+                        using (SqlCommand cmd = new SqlCommand(sql, conn))
+                        {
+                            long totalKas = Convert.ToInt64(cmd.ExecuteScalar());
+                            lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
+                        }
+                    }
+                    catch
+                    {
+                        // Fallback dengan DECIMAL
+                        string sql = "SELECT ISNULL(SUM(nominal), 0) FROM tb_iuran WHERE status_bayar='Lunas'";
+                        using (SqlCommand cmd = new SqlCommand(sql, conn))
+                        {
+                            decimal totalKas = Convert.ToDecimal(cmd.ExecuteScalar());
+                            lblTotalKas.Text = "Rp " + totalKas.ToString("N0", idCulture);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblTotalKas.Text = "Rp 0";
+                Console.WriteLine("Stats - Total Kas error: " + ex.Message);
+            }
+        }
+
 
         private void PopulateAnnouncements()
         {
@@ -346,8 +439,8 @@ namespace RTRWMultimedia
                             {
                                 hasData = true;
                                 string bulan = rd["bulan"].ToString();
-                                int total = Convert.ToInt32(rd["total"]);
-                                series.Points.AddXY(bulan, total);
+                                decimal totalVal = rd["total"] != DBNull.Value ? Convert.ToDecimal(rd["total"]) : 0m;
+                                series.Points.AddXY(bulan, totalVal);
                             }
 
                             if (!hasData)
@@ -360,8 +453,9 @@ namespace RTRWMultimedia
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Chart error: " + ex.Message);
                 series.Points.AddXY("Jan", 4200000);
                 series.Points.AddXY("Feb", 4500000);
                 series.Points.AddXY("Agu", 5450000);
@@ -395,8 +489,8 @@ namespace RTRWMultimedia
                             {
                                 string nama = rd["nama_warga"].ToString();
                                 string bulan = rd["bulan"].ToString();
-                                int nominalInt = Convert.ToInt32(rd["nominal"]);
-                                string nominalStr = "Rp " + nominalInt.ToString("N0", idCulture);
+                                decimal nominalDec = rd["nominal"] != DBNull.Value ? Convert.ToDecimal(rd["nominal"]) : 0m;
+                                string nominalStr = "Rp " + nominalDec.ToString("N0", idCulture);
                                 string status = rd["status_bayar"].ToString();
                                 string tgl = rd["tanggal_bayar"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_bayar"]).ToString("dd/MM/yyyy") : "-";
 
@@ -406,8 +500,9 @@ namespace RTRWMultimedia
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Transaction grid error: " + ex.Message);
                 dt.Rows.Add(1, "12/08/2026", "Budi Santoso", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(2, "11/08/2026", "Siti Rahma", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(3, "10/08/2026", "Ahmad Fauzi", "Agustus", "Rp 50.000", "Lunas");

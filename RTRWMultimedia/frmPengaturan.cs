@@ -91,6 +91,12 @@ namespace RTRWMultimedia
 
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Identitas Profil Wilayah RT/RW berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        frmDashboard parent = Application.OpenForms["frmDashboard"] as frmDashboard;
+                        if (parent != null)
+                        {
+                            parent.LoadSettingsHeaders();
+                        }
                     }
                 }
             }

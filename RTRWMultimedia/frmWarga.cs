@@ -22,12 +22,52 @@ namespace RTRWMultimedia
 
         private void frmWarga_Load(object sender, EventArgs e)
         {
+            // Batasi input dan pasang KeyPress event angka
+            txtNik.MaxLength = 16;
+            txtHp.MaxLength = 13;
+            txtNik.KeyPress += TxtAngka_KeyPress;
+            txtHp.KeyPress += TxtAngka_KeyPress;
+
             if (cboStatus.Items.Count > 0)
             {
                 cboStatus.SelectedIndex = 0; // Default "Aktif"
             }
             TampilData();
             Bersih();
+            LoadHeaderIdentity();
+        }
+
+        private void TxtAngka_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Hanya mengizinkan angka (0-9) dan tombol Control (seperti Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void LoadHeaderIdentity()
+        {
+            try
+            {
+                using (SqlConnection connection = Koneksi.GetConnection())
+                {
+                    connection.Open();
+                    string sql = "SELECT TOP 1 nama_rt_rw FROM tb_pengaturan";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        var val = command.ExecuteScalar();
+                        if (val != DBNull.Value && val != null)
+                        {
+                            lblHeaderTitle.Text = "📋 DATA WARGA " + val.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error loading warga header identity: " + ex.Message);
+            }
         }
 
         private void TampilData()
@@ -75,6 +115,13 @@ namespace RTRWMultimedia
                 return false;
             }
 
+            if (txtNik.Text.Trim().Length != 16)
+            {
+                MessageBox.Show("NIK harus berukuran tepat 16 digit angka!", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNik.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtNama.Text))
             {
                 MessageBox.Show("Nama Warga tidak boleh kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -82,14 +129,49 @@ namespace RTRWMultimedia
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(txtHp.Text) && !Regex.IsMatch(txtHp.Text.Trim(), @"^[0-9]+$"))
+            if (!string.IsNullOrWhiteSpace(txtHp.Text))
             {
-                MessageBox.Show("Nomor HP hanya boleh diisi angka!", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtHp.Focus();
-                return false;
+                if (!Regex.IsMatch(txtHp.Text.Trim(), @"^[0-9]+$"))
+                {
+                    MessageBox.Show("Nomor HP hanya boleh diisi angka!", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtHp.Focus();
+                    return false;
+                }
+
+                if (txtHp.Text.Trim().Length < 10 || txtHp.Text.Trim().Length > 13)
+                {
+                    MessageBox.Show("Nomor HP harus berukuran antara 10 hingga 13 digit angka!", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtHp.Focus();
+                    return false;
+                }
             }
 
             return true;
+        }
+
+        private bool CekNikSudahAda(string nik, int excludeIdWarga)
+        {
+            bool sudahAda = false;
+            try
+            {
+                using (SqlConnection connection = Koneksi.GetConnection())
+                {
+                    connection.Open();
+                    string sql = "SELECT COUNT(*) FROM tb_warga WHERE nik = @nik AND id_warga != @excludeId";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@nik", nik);
+                        command.Parameters.AddWithValue("@excludeId", excludeIdWarga);
+                        int count = Convert.ToInt32(command.ExecuteScalar());
+                        sudahAda = (count > 0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error checking duplicate NIK: " + ex.Message);
+            }
+            return sudahAda;
         }
 
         private string GetColumnName(DataTable table, params string[] candidates)
@@ -103,7 +185,25 @@ namespace RTRWMultimedia
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
+            // Mencegah double simpan jika dalam mode edit (warga sedang terpilih dari grid)
+            if (idWarga != 0)
+            {
+                MessageBox.Show("Warga ini sudah terdaftar (sedang dipilih).\n" +
+                                "Silakan klik tombol 'EDIT' jika ingin mengubah datanya, atau klik tombol 'BATAL' untuk membersihkan form dan menginput data baru.", 
+                                "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (!ValidasiInput()) return;
+
+            // Periksa duplikasi NIK di DB
+            if (CekNikSudahAda(txtNik.Text.Trim(), 0))
+            {
+                MessageBox.Show("NIK ini sudah terdaftar bagi warga lain! Harap masukkan NIK yang unik.", 
+                                "Peringatan Duplikasi NIK", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNik.Focus();
+                return;
+            }
 
             try
             {
@@ -170,6 +270,15 @@ namespace RTRWMultimedia
             }
 
             if (!ValidasiInput()) return;
+
+            // Periksa duplikasi NIK di DB bagi warga lain selain warga yang sedang di-edit
+            if (CekNikSudahAda(txtNik.Text.Trim(), idWarga))
+            {
+                MessageBox.Show("NIK ini sudah digunakan oleh warga lain! Harap masukkan NIK yang sesuai.", 
+                                "Peringatan Duplikasi NIK", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNik.Focus();
+                return;
+            }
 
             try
             {
