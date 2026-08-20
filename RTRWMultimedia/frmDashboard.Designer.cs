@@ -360,7 +360,7 @@ namespace RTRWMultimedia
             this.lblSubJudul.Name = "lblSubJudul";
             this.lblSubJudul.Size = new System.Drawing.Size(564, 28);
             this.lblSubJudul.TabIndex = 1;
-            this.lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga RT 04 / RW 02";
+            this.lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga RT 02 / RW 03";
             // 
             // lblJam
             // 
