@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -40,23 +40,29 @@ namespace RTRWMultimedia
             // 2.5. Load Identitas RT/RW dari Pengaturan Wilayah
             LoadSettingsHeaders();
 
-            // 3. ToolTip pada Profile Avatar
+            // 3. ToolTip pada Logo / Profil
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(picLogoSekolah, "Klik untuk membuka Profil Pengguna: " + currentUsername + " (" + currentLevelUser + ")");
+            tt.SetToolTip(picLogo, "Profil Pengguna: " + currentUsername + " (" + currentLevelUser + ")");
 
-            // 4. Populate Statistical Cards dari Database SQL
+            // 4. Load Identitas RT / RW dari tb_pengaturan
+            LoadIdentitasWilayah();
+
+            // 5. Populate Statistical Cards dari Database SQL
             PopulateStatCardsFromDB();
 
-            // 5. Populate Pengumuman dari Database SQL
+            // 6. Populate Pengumuman dari Database SQL
             PopulateAnnouncements();
 
-            // 6. Populate Chart Iuran
+            // 7. Populate Latest Kegiatan dari Database SQL (tb_galeri)
+            PopulateLatestActivity();
+
+            // 8. Populate Chart Iuran
             PopulateChartData();
 
-            // 7. Populate DataGridView Transaksi dari Database SQL
+            // 9. Populate DataGridView Transaksi dari Database SQL
             PopulateTransactionGrid();
 
-            // 8. Adjust Layout Responsiveness
+            // 10. Adjust Layout Responsiveness
             AdjustLayoutResponsiveness();
         }
 
@@ -104,7 +110,14 @@ namespace RTRWMultimedia
 
             flpContent.Visible = true;
             flpContent.BringToFront();
+
+            // Refresh seluruh data dari database SQL
+            LoadIdentitasWilayah();
             PopulateStatCardsFromDB();
+            PopulateAnnouncements();
+            PopulateLatestActivity();
+            PopulateChartData();
+            PopulateTransactionGrid();
             AdjustLayoutResponsiveness();
 
             // Highlight Dashboard button in sidebar
@@ -195,13 +208,24 @@ namespace RTRWMultimedia
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
                 string rtPath = Path.Combine(baseDir, "logo_rt.png");
-                if (File.Exists(rtPath)) picLogo.Image = Image.FromFile(rtPath);
-
-                string schPath = Path.Combine(baseDir, "logo_sekolah.png");
-                if (File.Exists(schPath)) picLogoSekolah.Image = Image.FromFile(schPath);
+                if (File.Exists(rtPath))
+                {
+                    using (FileStream fs = new FileStream(rtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picLogo.Image = new Bitmap(img);
+                    }
+                }
 
                 string kbPath = Path.Combine(baseDir, "kerjabakti.jpg");
-                if (File.Exists(kbPath)) picKegiatan.Image = Image.FromFile(kbPath);
+                if (File.Exists(kbPath))
+                {
+                    using (FileStream fs = new FileStream(kbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picKegiatan.Image = new Bitmap(img);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -223,12 +247,14 @@ namespace RTRWMultimedia
                         {
                             if (rd.Read())
                             {
-                                string rtRw = rd["nama_rt_rw"].ToString();
-                                string desa = rd["desa_kelurahan"].ToString();
-
-                                lblRTRW.Text = rtRw;
-                                lblSubRTRW.Text = "DESA " + desa.ToUpper();
-                                lblSubJudul.Text = "Sistem Informasi & Multimedia Lingkungan Warga " + rtRw;
+                                string rt = rd["nama_rt_rw"] != DBNull.Value ? rd["nama_rt_rw"].ToString() : "";
+                                string desa = rd["desa_kelurahan"] != DBNull.Value ? rd["desa_kelurahan"].ToString() : "";
+                                if (!string.IsNullOrWhiteSpace(rt)) lblRTRW.Text = rt;
+                                if (!string.IsNullOrWhiteSpace(desa))
+                                {
+                                    lblSubRTRW.Text = "DESA " + desa.ToUpper();
+                                    lblSubJudul.Text = $"{rt} {desa} - Sistem Informasi Terpadu";
+                                }
                             }
                         }
                     }
@@ -236,10 +262,14 @@ namespace RTRWMultimedia
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error loading settings headers: " + ex.Message);
+                Console.WriteLine("Note loading identitas wilayah: " + ex.Message);
             }
         }
 
+        private void LoadIdentitasWilayah()
+        {
+            LoadSettingsHeaders();
+        }
         private void PopulateStatCardsFromDB()
         {
             // === TOTAL WARGA ===
@@ -360,7 +390,7 @@ namespace RTRWMultimedia
                 using (SqlConnection conn = Koneksi.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT TOP 5 judul, isi_pengumuman, tanggal_posting FROM tb_pengumuman ORDER BY id_pengumuman DESC";
+                    string sql = "SELECT id_pengumuman, judul, isi_pengumuman, tanggal_posting FROM tb_pengumuman ORDER BY id_pengumuman DESC";
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         using (SqlDataReader rd = cmd.ExecuteReader())
@@ -369,12 +399,20 @@ namespace RTRWMultimedia
                             while (rd.Read())
                             {
                                 hasData = true;
-                                string judul = rd["judul"].ToString();
-                                string isi = rd["isi_pengumuman"].ToString();
+                                string judul = rd["judul"] != DBNull.Value ? rd["judul"].ToString() : "";
+                                string isi = rd["isi_pengumuman"] != DBNull.Value ? rd["isi_pengumuman"].ToString() : "";
+                                string tgl = rd["tanggal_posting"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_posting"]).ToString("dd MMMM yyyy", idCulture) : "";
 
-                                rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+                                rtbPengumuman.SelectionFont = new Font("Segoe UI", 10F, FontStyle.Bold);
                                 rtbPengumuman.SelectionColor = Color.FromArgb(15, 118, 110);
-                                rtbPengumuman.AppendText("📢  " + judul.ToUpper() + "\n");
+                                rtbPengumuman.AppendText("ðŸ“¢  " + judul.ToUpper());
+                                if (!string.IsNullOrEmpty(tgl))
+                                {
+                                    rtbPengumuman.SelectionFont = new Font("Segoe UI", 8F, FontStyle.Italic);
+                                    rtbPengumuman.SelectionColor = Color.FromArgb(100, 116, 139);
+                                    rtbPengumuman.AppendText($" ({tgl})");
+                                }
+                                rtbPengumuman.AppendText("\n");
 
                                 rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
                                 rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
@@ -383,33 +421,91 @@ namespace RTRWMultimedia
 
                             if (!hasData)
                             {
-                                AddDefaultAnnouncements();
+                                rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Italic);
+                                rtbPengumuman.SelectionColor = Color.FromArgb(100, 116, 139);
+                                rtbPengumuman.AppendText("Belum ada pengumuman yang tersimpan di database.");
                             }
                         }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                AddDefaultAnnouncements();
+                Console.WriteLine("Note loading announcements: " + ex.Message);
             }
         }
 
-        private void AddDefaultAnnouncements()
+        private void PopulateLatestActivity()
         {
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            rtbPengumuman.SelectionColor = Color.FromArgb(15, 118, 110);
-            rtbPengumuman.AppendText("📌  KERJA BAKTI LINGKUNGAN RT 04\n");
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
-            rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
-            rtbPengumuman.AppendText("Pelaksanaan: Minggu, 16 Agustus 2026 (07.00 WIB)\nKegiatan: Pembersihan saluran air dan persiapan dekorasi HUT RI.\n\n");
+            try
+            {
+                using (SqlConnection conn = Koneksi.GetConnection())
+                {
+                    conn.Open();
+                    string sql = "SELECT TOP 1 judul_kegiatan, kategori, tanggal_kegiatan, lokasi, deskripsi, foto_path FROM tb_galeri ORDER BY tanggal_kegiatan DESC, id_galeri DESC";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            if (rd.Read())
+                            {
+                                string judul = rd["judul_kegiatan"] != DBNull.Value ? rd["judul_kegiatan"].ToString() : "Dokumentasi Kegiatan";
+                                string fotoPath = rd["foto_path"] != DBNull.Value ? rd["foto_path"].ToString() : "";
+                                string tgl = rd["tanggal_kegiatan"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_kegiatan"]).ToString("dd MMMM yyyy", idCulture) : "";
+                                string lokasi = rd["lokasi"] != DBNull.Value ? rd["lokasi"].ToString() : "";
 
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            rtbPengumuman.SelectionColor = Color.FromArgb(37, 99, 235);
-            rtbPengumuman.AppendText("📢  RAPAT BULANAN WARGA\n");
-            rtbPengumuman.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
-            rtbPengumuman.SelectionColor = Color.FromArgb(51, 65, 85);
-            rtbPengumuman.AppendText("Hari/Tgl: Sabtu, 22 Agustus 2026 di Balai Warga RT 04.\nAgenda: Pembahasan Kas & Pembangunan Taman Warga.\n\n");
+                                grpKegiatan.Text = $"ðŸ–¼ï¸  DOKUMENTASI: {judul.ToUpper()}";
+
+                                if (!string.IsNullOrEmpty(fotoPath) && File.Exists(fotoPath))
+                                {
+                                    try
+                                    {
+                                        using (var imgTemp = Image.FromFile(fotoPath))
+                                        {
+                                            picKegiatan.Image = new Bitmap(imgTemp);
+                                        }
+                                    }
+                                    catch { }
+                                }
+                                else
+                                {
+                                    string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                                    string kbPath = Path.Combine(baseDir, "kerjabakti.jpg");
+                                    if (File.Exists(kbPath))
+                                    {
+                                        picKegiatan.Image = Image.FromFile(kbPath);
+                                    }
+                                    else
+                                    {
+                                        // Visual card banner
+                                        Bitmap bmp = new Bitmap(420, 210);
+                                        using (Graphics g = Graphics.FromImage(bmp))
+                                        {
+                                            g.Clear(Color.FromArgb(241, 245, 249));
+                                            using (Brush b = new SolidBrush(Color.FromArgb(15, 118, 110)))
+                                            {
+                                                g.FillRectangle(new SolidBrush(Color.FromArgb(204, 251, 241)), 10, 10, 400, 190);
+                                                g.DrawRectangle(new Pen(Color.FromArgb(15, 118, 110), 2), 10, 10, 400, 190);
+                                                g.DrawString("ðŸ“¸ DOKUMENTASI KEGIATAN TERBARU", new Font("Segoe UI", 10.5F, FontStyle.Bold), b, new PointF(25, 25));
+                                            }
+                                            using (Brush bText = new SolidBrush(Color.FromArgb(30, 41, 59)))
+                                            {
+                                                g.DrawString(judul, new Font("Segoe UI", 12F, FontStyle.Bold), bText, new RectangleF(25, 55, 360, 50));
+                                                g.DrawString($"ðŸ“… Tanggal: {tgl}\nðŸ“ Lokasi: {lokasi}", new Font("Segoe UI", 9.5F, FontStyle.Regular), bText, new PointF(25, 115));
+                                            }
+                                        }
+                                        picKegiatan.Image = bmp;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Note loading latest activity: " + ex.Message);
+            }
         }
 
         private void PopulateChartData()
@@ -429,25 +525,36 @@ namespace RTRWMultimedia
                 using (SqlConnection conn = Koneksi.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT bulan, SUM(nominal) as total FROM tb_iuran GROUP BY bulan";
+                    string sql = @"
+                        SELECT bulan, ISNULL(SUM(nominal), 0) AS total 
+                        FROM tb_iuran 
+                        WHERE status_bayar='Lunas' 
+                        GROUP BY bulan
+                        ORDER BY 
+                            CASE bulan
+                                WHEN 'Januari' THEN 1
+                                WHEN 'Februari' THEN 2
+                                WHEN 'Maret' THEN 3
+                                WHEN 'April' THEN 4
+                                WHEN 'Mei' THEN 5
+                                WHEN 'Juni' THEN 6
+                                WHEN 'Juli' THEN 7
+                                WHEN 'Agustus' THEN 8
+                                WHEN 'September' THEN 9
+                                WHEN 'Oktober' THEN 10
+                                WHEN 'November' THEN 11
+                                WHEN 'Desember' THEN 12
+                                ELSE 13
+                            END";
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         using (SqlDataReader rd = cmd.ExecuteReader())
                         {
-                            bool hasData = false;
                             while (rd.Read())
                             {
-                                hasData = true;
                                 string bulan = rd["bulan"].ToString();
-                                decimal totalVal = rd["total"] != DBNull.Value ? Convert.ToDecimal(rd["total"]) : 0m;
+decimal totalVal = rd["total"] != DBNull.Value ? Convert.ToDecimal(rd["total"]) : 0m;
                                 series.Points.AddXY(bulan, totalVal);
-                            }
-
-                            if (!hasData)
-                            {
-                                series.Points.AddXY("Jan", 4200000);
-                                series.Points.AddXY("Feb", 4500000);
-                                series.Points.AddXY("Agu", 5450000);
                             }
                         }
                     }
@@ -455,7 +562,7 @@ namespace RTRWMultimedia
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Chart error: " + ex.Message);
+Console.WriteLine("Chart error: " + ex.Message);
                 series.Points.AddXY("Jan", 4200000);
                 series.Points.AddXY("Feb", 4500000);
                 series.Points.AddXY("Agu", 5450000);
@@ -487,11 +594,11 @@ namespace RTRWMultimedia
                             int no = 1;
                             while (rd.Read())
                             {
-                                string nama = rd["nama_warga"].ToString();
-                                string bulan = rd["bulan"].ToString();
+string nama = rd["nama_warga"] != DBNull.Value ? rd["nama_warga"].ToString() : "-";
+                                string bulan = rd["bulan"] != DBNull.Value ? rd["bulan"].ToString() : "-";
                                 decimal nominalDec = rd["nominal"] != DBNull.Value ? Convert.ToDecimal(rd["nominal"]) : 0m;
                                 string nominalStr = "Rp " + nominalDec.ToString("N0", idCulture);
-                                string status = rd["status_bayar"].ToString();
+                                string status = rd["status_bayar"] != DBNull.Value ? rd["status_bayar"].ToString() : "-";
                                 string tgl = rd["tanggal_bayar"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_bayar"]).ToString("dd/MM/yyyy") : "-";
 
                                 dt.Rows.Add(no++, tgl, nama, bulan, nominalStr, status);
@@ -502,7 +609,7 @@ namespace RTRWMultimedia
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Transaction grid error: " + ex.Message);
+Console.WriteLine("Transaction grid error: " + ex.Message);
                 dt.Rows.Add(1, "12/08/2026", "Budi Santoso", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(2, "11/08/2026", "Siti Rahma", "Agustus", "Rp 50.000", "Lunas");
                 dt.Rows.Add(3, "10/08/2026", "Ahmad Fauzi", "Agustus", "Rp 50.000", "Lunas");
@@ -543,6 +650,26 @@ namespace RTRWMultimedia
             else if (clickedBtn == btnWarga)
             {
                 OpenSubForm(new frmWarga());
+            }
+            else if (clickedBtn == btnIuran)
+            {
+                OpenSubForm(new frmIuran());
+            }
+            else if (clickedBtn == btnPengumuman)
+            {
+                OpenSubForm(new frmPengumuman());
+            }
+            else if (clickedBtn == btnSurat)
+            {
+                OpenSubForm(new frmSurat());
+            }
+            else if (clickedBtn == btnLaporan)
+            {
+                OpenSubForm(new frmLaporan());
+            }
+            else if (clickedBtn == btnGaleri)
+            {
+                OpenSubForm(new frmGaleri());
             }
             else if (clickedBtn == btnPengaturan)
             {

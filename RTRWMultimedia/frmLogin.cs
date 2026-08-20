@@ -18,6 +18,13 @@ namespace RTRWMultimedia
         {
             UpdateClockAndDate();
             LoadAssets();
+
+            // Otomatis cek & buat database + tabel jika belum ada di komputer ini
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            {
+                string msg;
+                DbInitializer.EnsureDatabaseAndTablesExist(out msg);
+            });
         }
 
         private void LoadAssets()
@@ -26,16 +33,14 @@ namespace RTRWMultimedia
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string pathRt = Path.Combine(baseDir, "logo_rt.png");
-                string pathSekolah = Path.Combine(baseDir, "logo_sekolah.png");
 
                 if (File.Exists(pathRt))
                 {
-                    picLogo.Image = Image.FromFile(pathRt);
-                }
-
-                if (File.Exists(pathSekolah))
-                {
-                    picLogoSekolah.Image = Image.FromFile(pathSekolah);
+                    using (FileStream fs = new FileStream(pathRt, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picLogo.Image = new Bitmap(img);
+                    }
                 }
             }
             catch (Exception ex)
@@ -56,6 +61,24 @@ namespace RTRWMultimedia
 
             var culture = new System.Globalization.CultureInfo("id-ID");
             lblTanggal.Text = "- " + now.ToString("dddd, d MMMM yyyy", culture);
+        }
+
+        private void txtUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Hilangkan suara beep sistem Windows
+                txtPassword.Focus();
+            }
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Hilangkan suara beep sistem Windows
+                btnLogin.PerformClick();
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -109,7 +132,7 @@ namespace RTRWMultimedia
                 {
                     MessageBox.Show("Login Berhasil! Selamat Datang (" + levelUser + ")", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    frmDashboard f = new frmDashboard();
+                    frmDashboard f = new frmDashboard(txtUsername.Text.Trim(), levelUser);
                     f.Show();
 
                     this.Hide();
@@ -134,16 +157,26 @@ namespace RTRWMultimedia
         {
             try
             {
-                using (SqlConnection conn = Koneksi.GetConnection())
+                Cursor.Current = Cursors.WaitCursor;
+                string msg;
+                bool ok = DbInitializer.EnsureDatabaseAndTablesExist(out msg);
+
+                if (ok)
                 {
-                    conn.Open();
-                    MessageBox.Show("Koneksi Berhasil! Terhubung ke Database DB_RTRW di SQL Server.", "Uji Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    conn.Close();
+                    MessageBox.Show("Status Koneksi & Database:\n" + msg + "\n\nSemua tabel siap digunakan!", "Uji & Inisialisasi Database", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Koneksi / Inisialisasi Gagal:\n" + msg, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Koneksi Gagal:\n" + ex.Message, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Terjadi Kesalahan:\n" + ex.Message, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
     }

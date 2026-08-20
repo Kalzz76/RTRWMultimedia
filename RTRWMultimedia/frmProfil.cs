@@ -44,7 +44,11 @@ namespace RTRWMultimedia
                 string avatarPath = Path.Combine(baseDir, "logo_sekolah.png");
                 if (File.Exists(avatarPath))
                 {
-                    picAvatar.Image = Image.FromFile(avatarPath);
+                    using (FileStream fs = new FileStream(avatarPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picAvatar.Image = new Bitmap(img);
+                    }
                 }
             }
             catch (Exception ex)
