@@ -50,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Koneksi.cs" />
+    <Compile Include="Database\DbInitializer.cs" />
+    <Content Include="Database\DB_RTRW.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>

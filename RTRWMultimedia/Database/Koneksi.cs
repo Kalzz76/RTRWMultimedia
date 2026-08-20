@@ -4,12 +4,23 @@ namespace RTRWMultimedia.Database
 {
     public class Koneksi
     {
+        private static string dataSource = @".\SQLEXPRESS";
+
+        public static void SetDataSource(string server)
+        {
+            if (!string.IsNullOrWhiteSpace(server))
+            {
+                dataSource = server;
+            }
+        }
+
         public static SqlConnection GetConnection()
         {
             SqlConnection conn = new SqlConnection(
-                @"Data Source=.\SQLEXPRESS;Initial Catalog=DB_RTRW;Integrated Security=True");
+                string.Format(@"Data Source={0};Initial Catalog=DB_RTRW;Integrated Security=True;MultipleActiveResultSets=True", dataSource));
 
             return conn;
         }
     }
 }
+

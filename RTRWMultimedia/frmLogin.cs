@@ -18,6 +18,12 @@ namespace RTRWMultimedia
         {
             UpdateClockAndDate();
             LoadAssets();
+
+            // Otomatis cek & buat database + tabel jika belum ada di komputer ini
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            {
+                DbInitializer.EnsureDatabaseAndTablesExist(out _);
+            });
         }
 
         private void LoadAssets()
@@ -147,16 +153,26 @@ namespace RTRWMultimedia
         {
             try
             {
-                using (SqlConnection conn = Koneksi.GetConnection())
+                Cursor.Current = Cursors.WaitCursor;
+                string msg;
+                bool ok = DbInitializer.EnsureDatabaseAndTablesExist(out msg);
+
+                if (ok)
                 {
-                    conn.Open();
-                    MessageBox.Show("Koneksi Berhasil! Terhubung ke Database DB_RTRW di SQL Server.", "Uji Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    conn.Close();
+                    MessageBox.Show("Status Koneksi & Database:\n" + msg + "\n\nSemua tabel siap digunakan!", "Uji & Inisialisasi Database", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Koneksi / Inisialisasi Gagal:\n" + msg, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Koneksi Gagal:\n" + ex.Message, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Terjadi Kesalahan:\n" + ex.Message, "Uji Koneksi Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
     }
