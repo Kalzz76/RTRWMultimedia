@@ -59,6 +59,8 @@ namespace RTRWMultimedia
             this.lblFoto = new System.Windows.Forms.Label();
             this.txtFotoPath = new System.Windows.Forms.TextBox();
             this.btnBrowseFoto = new System.Windows.Forms.Button();
+            this.lblPreview = new System.Windows.Forms.Label();
+            this.picPreview = new System.Windows.Forms.PictureBox();
             this.flpActions = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSimpan = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -70,6 +72,7 @@ namespace RTRWMultimedia
             ((System.ComponentModel.ISupportInitialize)(this.dgvGaleri)).BeginInit();
             this.pnlSearchHeader.SuspendLayout();
             this.pnlInputCard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.flpActions.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -282,6 +285,8 @@ namespace RTRWMultimedia
             this.pnlInputCard.Controls.Add(this.lblFoto);
             this.pnlInputCard.Controls.Add(this.txtFotoPath);
             this.pnlInputCard.Controls.Add(this.btnBrowseFoto);
+            this.pnlInputCard.Controls.Add(this.lblPreview);
+            this.pnlInputCard.Controls.Add(this.picPreview);
             this.pnlInputCard.Controls.Add(this.flpActions);
             this.pnlInputCard.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInputCard.Location = new System.Drawing.Point(16, 16);
@@ -400,14 +405,14 @@ namespace RTRWMultimedia
             this.txtDeskripsi.Multiline = true;
             this.txtDeskripsi.Name = "txtDeskripsi";
             this.txtDeskripsi.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtDeskripsi.Size = new System.Drawing.Size(460, 68);
+            this.txtDeskripsi.Size = new System.Drawing.Size(315, 68);
             this.txtDeskripsi.TabIndex = 10;
             // 
             // lblFoto
             // 
             this.lblFoto.AutoSize = true;
             this.lblFoto.Font = new System.Drawing.Font("Segoe UI", 8.75F, System.Drawing.FontStyle.Bold);
-            this.lblFoto.Location = new System.Drawing.Point(495, 82);
+            this.lblFoto.Location = new System.Drawing.Point(348, 82);
             this.lblFoto.Name = "lblFoto";
             this.lblFoto.Size = new System.Drawing.Size(130, 15);
             this.lblFoto.TabIndex = 11;
@@ -416,10 +421,11 @@ namespace RTRWMultimedia
             // txtFotoPath
             // 
             this.txtFotoPath.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.txtFotoPath.Location = new System.Drawing.Point(498, 100);
+            this.txtFotoPath.Location = new System.Drawing.Point(351, 100);
             this.txtFotoPath.Name = "txtFotoPath";
-            this.txtFotoPath.Size = new System.Drawing.Size(315, 24);
+            this.txtFotoPath.Size = new System.Drawing.Size(175, 24);
             this.txtFotoPath.TabIndex = 12;
+            this.txtFotoPath.TextChanged += new System.EventHandler(this.txtFotoPath_TextChanged);
             // 
             // btnBrowseFoto
             // 
@@ -429,13 +435,35 @@ namespace RTRWMultimedia
             this.btnBrowseFoto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowseFoto.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.btnBrowseFoto.ForeColor = System.Drawing.Color.White;
-            this.btnBrowseFoto.Location = new System.Drawing.Point(820, 99);
+            this.btnBrowseFoto.Location = new System.Drawing.Point(532, 99);
             this.btnBrowseFoto.Name = "btnBrowseFoto";
-            this.btnBrowseFoto.Size = new System.Drawing.Size(88, 26);
+            this.btnBrowseFoto.Size = new System.Drawing.Size(94, 26);
             this.btnBrowseFoto.TabIndex = 13;
             this.btnBrowseFoto.Text = "📁 Pilih Foto";
             this.btnBrowseFoto.UseVisualStyleBackColor = false;
             this.btnBrowseFoto.Click += new System.EventHandler(this.btnBrowseFoto_Click);
+            // 
+            // lblPreview
+            // 
+            this.lblPreview.AutoSize = true;
+            this.lblPreview.Font = new System.Drawing.Font("Segoe UI", 8.75F, System.Drawing.FontStyle.Bold);
+            this.lblPreview.Location = new System.Drawing.Point(642, 82);
+            this.lblPreview.Name = "lblPreview";
+            this.lblPreview.Size = new System.Drawing.Size(93, 15);
+            this.lblPreview.TabIndex = 15;
+            this.lblPreview.Text = "🖼️ Preview Foto";
+            // 
+            // picPreview
+            // 
+            this.picPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPreview.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picPreview.Location = new System.Drawing.Point(645, 100);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(263, 68);
+            this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPreview.TabIndex = 16;
+            this.picPreview.TabStop = false;
+            this.picPreview.Click += new System.EventHandler(this.picPreview_Click);
             // 
             // flpActions
             // 
@@ -443,9 +471,9 @@ namespace RTRWMultimedia
             this.flpActions.Controls.Add(this.btnEdit);
             this.flpActions.Controls.Add(this.btnHapus);
             this.flpActions.Controls.Add(this.btnBatal);
-            this.flpActions.Location = new System.Drawing.Point(498, 132);
+            this.flpActions.Location = new System.Drawing.Point(351, 132);
             this.flpActions.Name = "flpActions";
-            this.flpActions.Size = new System.Drawing.Size(410, 42);
+            this.flpActions.Size = new System.Drawing.Size(285, 36);
             this.flpActions.TabIndex = 14;
             // 
             // btnSimpan
@@ -539,6 +567,7 @@ namespace RTRWMultimedia
             this.pnlSearchHeader.PerformLayout();
             this.pnlInputCard.ResumeLayout(false);
             this.pnlInputCard.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.flpActions.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -574,6 +603,8 @@ namespace RTRWMultimedia
         private System.Windows.Forms.Label lblFoto;
         private System.Windows.Forms.TextBox txtFotoPath;
         private System.Windows.Forms.Button btnBrowseFoto;
+        private System.Windows.Forms.Label lblPreview;
+        private System.Windows.Forms.PictureBox picPreview;
         private System.Windows.Forms.FlowLayoutPanel flpActions;
         private System.Windows.Forms.Button btnSimpan;
         private System.Windows.Forms.Button btnEdit;

@@ -28,8 +28,43 @@ namespace RTRWMultimedia
             if (cboFilterStatus.Items.Count > 0) cboFilterStatus.SelectedIndex = 0; // Default "Semua Status"
 
             LoadWargaCombo();
+            SyncSemuaWargaKeIuran();
             TampilData();
             Bersih();
+        }
+
+        private void SyncSemuaWargaKeIuran()
+        {
+            try
+            {
+                using (SqlConnection c = Koneksi.GetConnection())
+                {
+                    c.Open();
+                    string selectedBulan = cboBulan.SelectedItem != null ? cboBulan.SelectedItem.ToString() : "Agustus";
+
+                    // Auto-insert entries for all citizens in tb_warga who don't have an iuran record for this month yet
+                    string sql = @"
+                        INSERT INTO tb_iuran (nama_warga, bulan, nominal, tanggal_bayar, status_bayar)
+                        SELECT w.nama, @bulan, 50000, GETDATE(), 'Belum Bayar'
+                        FROM tb_warga w
+                        WHERE ISNULL(w.nama, '') <> '' 
+                          AND NOT EXISTS (
+                              SELECT 1 FROM tb_iuran i 
+                              WHERE LOWER(i.nama_warga) = LOWER(w.nama) 
+                                AND i.bulan = @bulan
+                          )";
+
+                    using (SqlCommand cmdSync = new SqlCommand(sql, c))
+                    {
+                        cmdSync.Parameters.AddWithValue("@bulan", selectedBulan);
+                        cmdSync.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Note syncing warga to iuran: " + ex.Message);
+            }
         }
 
         private void SetCurrentMonthDefault()
@@ -105,11 +140,44 @@ namespace RTRWMultimedia
                 }
                 if (dgvIuran.Columns["status_bayar"] != null) dgvIuran.Columns["status_bayar"].HeaderText = "Status Bayar";
 
+                FormatGridRows();
                 UpdateTotalKas(dt);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error saat memuat data iuran:\n" + ex.Message, "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FormatGridRows()
+        {
+            try
+            {
+                foreach (DataGridViewRow row in dgvIuran.Rows)
+                {
+                    if (row.Cells["status_bayar"] != null && row.Cells["status_bayar"].Value != null)
+                    {
+                        string status = row.Cells["status_bayar"].Value.ToString().Trim();
+                        if (status.Equals("Lunas", StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(220, 252, 231); // Light Green
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(22, 101, 52);
+                            row.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(187, 247, 208);
+                            row.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(22, 101, 52);
+                        }
+                        else
+                        {
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(254, 226, 226); // Light Red
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(153, 27, 27);
+                            row.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(254, 202, 202);
+                            row.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(153, 27, 27);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Note formatting grid rows: " + ex.Message);
             }
         }
 
@@ -376,6 +444,7 @@ namespace RTRWMultimedia
                 da.Fill(dt);
                 dgvIuran.DataSource = dt;
 
+                FormatGridRows();
                 UpdateTotalKas(dt);
             }
             catch (Exception ex)

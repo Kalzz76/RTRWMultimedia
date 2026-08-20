@@ -363,15 +363,27 @@ namespace RTRWMultimedia
             }
 
             // === BELUM BAYAR ===
+            int belumBayar = 0;
             try
             {
-                int belumBayar = Math.Max(0, totalWarga - aktifBayar);
+                belumBayar = Math.Max(0, totalWarga - aktifBayar);
                 lblBelumBayarVal.Text = belumBayar.ToString();
             }
             catch
             {
                 lblBelumBayarVal.Text = "0";
             }
+
+            // === PERSENTASE DINAMIS ===
+            try
+            {
+                int pctAktif = totalWarga > 0 ? (int)Math.Round((double)aktifBayar / totalWarga * 100) : 0;
+                int pctBelum = totalWarga > 0 ? (int)Math.Round((double)belumBayar / totalWarga * 100) : 0;
+
+                lblSubAktifBayar.Text = $"Warga ({pctAktif}%)";
+                lblSubBelumBayar.Text = $"Warga ({pctBelum}%)";
+            }
+            catch { }
 
             // === TOTAL KAS ===
             try
@@ -433,7 +445,7 @@ namespace RTRWMultimedia
 
                                 rtbPengumuman.SelectionFont = new Font("Segoe UI", 10F, FontStyle.Bold);
                                 rtbPengumuman.SelectionColor = Color.FromArgb(15, 118, 110);
-                                rtbPengumuman.AppendText("ðŸ“¢  " + judul.ToUpper());
+                                rtbPengumuman.AppendText("📢  " + judul.ToUpper());
                                 if (!string.IsNullOrEmpty(tgl))
                                 {
                                     rtbPengumuman.SelectionFont = new Font("Segoe UI", 8F, FontStyle.Italic);
@@ -481,8 +493,7 @@ namespace RTRWMultimedia
                                 string fotoPath = rd["foto_path"] != DBNull.Value ? rd["foto_path"].ToString() : "";
                                 string tgl = rd["tanggal_kegiatan"] != DBNull.Value ? Convert.ToDateTime(rd["tanggal_kegiatan"]).ToString("dd MMMM yyyy", idCulture) : "";
                                 string lokasi = rd["lokasi"] != DBNull.Value ? rd["lokasi"].ToString() : "";
-
-                                grpKegiatan.Text = $"ðŸ–¼ï¸  DOKUMENTASI: {judul.ToUpper()}";
+                                grpKegiatan.Text = $"🖼️ DOKUMENTASI: {judul.ToUpper()}";
 
                                 if (!string.IsNullOrEmpty(fotoPath) && File.Exists(fotoPath))
                                 {
@@ -514,12 +525,12 @@ namespace RTRWMultimedia
                                             {
                                                 g.FillRectangle(new SolidBrush(Color.FromArgb(204, 251, 241)), 10, 10, 400, 190);
                                                 g.DrawRectangle(new Pen(Color.FromArgb(15, 118, 110), 2), 10, 10, 400, 190);
-                                                g.DrawString("ðŸ“¸ DOKUMENTASI KEGIATAN TERBARU", new Font("Segoe UI", 10.5F, FontStyle.Bold), b, new PointF(25, 25));
+                                                g.DrawString("📷 DOKUMENTASI KEGIATAN TERBARU", new Font("Segoe UI", 10.5F, FontStyle.Bold), b, new PointF(25, 25));
                                             }
                                             using (Brush bText = new SolidBrush(Color.FromArgb(30, 41, 59)))
                                             {
                                                 g.DrawString(judul, new Font("Segoe UI", 12F, FontStyle.Bold), bText, new RectangleF(25, 55, 360, 50));
-                                                g.DrawString($"ðŸ“… Tanggal: {tgl}\nðŸ“ Lokasi: {lokasi}", new Font("Segoe UI", 9.5F, FontStyle.Regular), bText, new PointF(25, 115));
+                                                g.DrawString($"📅 Tanggal: {tgl}\n📍 Lokasi: {lokasi}", new Font("Segoe UI", 9.5F, FontStyle.Regular), bText, new PointF(25, 115));
                                             }
                                         }
                                         picKegiatan.Image = bmp;

@@ -107,7 +107,81 @@ namespace RTRWMultimedia
             txtDeskripsi.Clear();
             txtFotoPath.Clear();
             idGaleri = 0;
+            TampilkanPreviewFoto(null);
             txtJudul.Focus();
+        }
+
+        private void TampilkanPreviewFoto(string path)
+        {
+            try
+            {
+                if (picPreview.Image != null)
+                {
+                    picPreview.Image.Dispose();
+                    picPreview.Image = null;
+                }
+
+                if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                {
+                    using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (System.Drawing.Image img = System.Drawing.Image.FromStream(fs))
+                    {
+                        picPreview.Image = new System.Drawing.Bitmap(img);
+                    }
+                }
+                else
+                {
+                    TampilkanPlaceholder();
+                }
+            }
+            catch
+            {
+                TampilkanPlaceholder();
+            }
+        }
+
+        private void TampilkanPlaceholder()
+        {
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(200, 80);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
+            {
+                g.Clear(System.Drawing.Color.FromArgb(241, 245, 249));
+                using (System.Drawing.Pen p = new System.Drawing.Pen(System.Drawing.Color.FromArgb(203, 213, 225), 1))
+                {
+                    p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    g.DrawRectangle(p, 2, 2, 195, 75);
+                }
+                using (System.Drawing.Brush b = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(148, 163, 184)))
+                {
+                    g.DrawString("🖼️ Tidak Ada Foto", new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold), b, new System.Drawing.PointF(42, 30));
+                }
+            }
+            picPreview.Image = bmp;
+        }
+
+        private void txtFotoPath_TextChanged(object sender, EventArgs e)
+        {
+            TampilkanPreviewFoto(txtFotoPath.Text.Trim());
+        }
+
+        private void picPreview_Click(object sender, EventArgs e)
+        {
+            string path = txtFotoPath.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(path);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal membuka foto:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Tidak ada foto yang dilampirkan atau file tidak ditemukan di lokasi tersebut.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private bool ValidasiInput()
