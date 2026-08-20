@@ -20,7 +20,6 @@ BEGIN
         id_user INT IDENTITY(1,1) PRIMARY KEY,
         username VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(100) NOT NULL,
-        nama_lengkap VARCHAR(100) NOT NULL,
         level_user VARCHAR(30) NOT NULL DEFAULT 'Administrator'
     );
 END
@@ -136,8 +135,8 @@ GO
 -- Seed Akun Default (admin / admin)
 IF NOT EXISTS (SELECT 1 FROM tb_user WHERE username = 'admin')
 BEGIN
-    INSERT INTO tb_user (username, password, nama_lengkap, level_user)
-    VALUES ('admin', 'admin', 'Administrator Sistem', 'Administrator');
+    INSERT INTO tb_user (username, password, level_user)
+    VALUES ('admin', 'admin', 'Administrator');
 END
 GO
 
