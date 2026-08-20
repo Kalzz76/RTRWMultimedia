@@ -32,11 +32,14 @@ namespace RTRWMultimedia
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string pathRt = Path.Combine(baseDir, "logo_rt.png");
-                string pathSekolah = Path.Combine(baseDir, "logo_sekolah.png");
 
                 if (File.Exists(pathRt))
                 {
-                    picLogo.Image = Image.FromFile(pathRt);
+                    using (FileStream fs = new FileStream(pathRt, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picLogo.Image = new Bitmap(img);
+                    }
                 }
             }
             catch (Exception ex)

@@ -205,10 +205,24 @@ namespace RTRWMultimedia
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
                 string rtPath = Path.Combine(baseDir, "logo_rt.png");
-                if (File.Exists(rtPath)) picLogo.Image = Image.FromFile(rtPath);
+                if (File.Exists(rtPath))
+                {
+                    using (FileStream fs = new FileStream(rtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picLogo.Image = new Bitmap(img);
+                    }
+                }
 
                 string kbPath = Path.Combine(baseDir, "kerjabakti.jpg");
-                if (File.Exists(kbPath)) picKegiatan.Image = Image.FromFile(kbPath);
+                if (File.Exists(kbPath))
+                {
+                    using (FileStream fs = new FileStream(kbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Image img = Image.FromStream(fs))
+                    {
+                        picKegiatan.Image = new Bitmap(img);
+                    }
+                }
             }
             catch (Exception ex)
             {
